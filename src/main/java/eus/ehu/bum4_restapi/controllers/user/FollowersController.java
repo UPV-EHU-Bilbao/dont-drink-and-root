@@ -25,14 +25,15 @@
 
 package eus.ehu.bum4_restapi.controllers.user;
 
+import eus.ehu.bum4_restapi.api.MastodonAPI;
+import eus.ehu.bum4_restapi.api.RestAPI;
 import eus.ehu.bum4_restapi.model.Account;
+import eus.ehu.bum4_restapi.utils.Constants;
+import eus.ehu.bum4_restapi.utils.PropertyManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -49,37 +50,16 @@ import com.google.gson.reflect.TypeToken;
 
 public class FollowersController {
 
+
     @FXML
     private ListView<Account> followersView;
     java.util.List<Account> accounts;
 
-    private String request(String endpoint){
-        String result="";
-
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url("https://mastodon.social/api/v1/"+endpoint)
-                .get()
-                .addHeader("Authorization", "Bearer "+System.getenv("TOKEN"))
-                .build();
-
-        try{
-            Response response = client.newCall(request).execute();
-            if(response.code()==200){
-                result=response.body().string();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return result;
-
-    }
+    RestAPI<?, ?> restAPI;
 
     public java.util.List<Account> getFollowers(){
         String id = "109897320631957665";
-        String body = request("accounts/"+id+"/followers");
+        String body = restAPI.sendRequest("accounts/"+id+"/followers");
 
         Gson gson = new Gson();
         JsonArray jsonArray = gson.fromJson(body, JsonArray.class);
@@ -91,8 +71,8 @@ public class FollowersController {
     }
 
     @FXML
-    public void initialize(){
-
+    public void initialize() throws IOException {
+        restAPI = new MastodonAPI(PropertyManager.getProperty(Constants.USER_JUANAN));
         accounts = getFollowers();
 
         ObservableList<Account> items = FXCollections.observableList(accounts);

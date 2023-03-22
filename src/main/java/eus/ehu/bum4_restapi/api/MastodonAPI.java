@@ -41,7 +41,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MastodonAPI implements RestAPI<Toot> {
+public class MastodonAPI implements RestAPI<Toot, Account> {
     List<Toot> tootList;
     String accountId;
     List<Account> followersList;
@@ -158,6 +158,11 @@ public class MastodonAPI implements RestAPI<Toot> {
             throw new ArrayIndexOutOfBoundsException();
 
         return tootList.get(index);
+    }
+
+    @Override
+    public List<Account> getObjectList(String endpoint) {
+        return getFollowers(endpoint);
     }
 
     @Override

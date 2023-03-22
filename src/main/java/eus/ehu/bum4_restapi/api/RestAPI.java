@@ -27,11 +27,14 @@ package eus.ehu.bum4_restapi.api;
 
 import com.google.gson.JsonArray;
 
-public interface RestAPI<T> {
+import java.util.List;
+
+public interface RestAPI<T, V> {
     public String sendRequest(String endpoint);
     public void convertJSONtoList();
     public JsonArray getPreviousJSONObject();
     public JsonArray getNextJSONObject();
     public T getObjectFromList(int index);
+    public List<V> getObjectList(String endpoint);
     public int getObjectListSize();
 }

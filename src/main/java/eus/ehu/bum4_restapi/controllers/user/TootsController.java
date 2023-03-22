@@ -81,7 +81,7 @@ public class TootsController {
     /**
      * Specific MainController class members.
      */
-    RestAPI<?> restAPI;
+    RestAPI<?, ?> restAPI;
     int currentToot;
     int totalToots;
 
