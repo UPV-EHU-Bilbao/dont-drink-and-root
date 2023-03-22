@@ -43,6 +43,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 
+/**
+ * TODO: This needs to use MastodonAPI
+ */
+
 public class FollowersController {
 
     @FXML
