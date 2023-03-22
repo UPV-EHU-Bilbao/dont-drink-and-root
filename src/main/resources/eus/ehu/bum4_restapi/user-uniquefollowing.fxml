@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="listItem" prefHeight="167.0" prefWidth="437.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <ImageView fx:id="avatar" fitHeight="115.0" fitWidth="118.0" layoutX="296.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true" />
+        <Label layoutX="45.0" layoutY="41.0" text="Username:" />
+        <Label layoutX="45.0" layoutY="73.0" text="Display name:" />
+        <Label layoutX="45.0" layoutY="110.0" text="Followers:" />
+        <Label layoutX="155.0" layoutY="110.0" text="Following:" />
+        <TextField fx:id="username" editable="false" layoutX="125.0" layoutY="37.0" />
+        <TextField fx:id="displayName" editable="false" layoutX="125.0" layoutY="69.0" />
+        <TextField fx:id="followers" editable="false" layoutX="107.0" layoutY="106.0" prefHeight="25.0" prefWidth="36.0" />
+        <TextField fx:id="following" editable="false" layoutX="213.0" layoutY="106.0" prefHeight="25.0" prefWidth="36.0" />
+    </children>
+</AnchorPane>

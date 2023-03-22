@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eus.ehu.bum4_restapi.controllers.user.FollowersController">
+    <children>
+        <ListView fx:id="followersView" layoutX="61.0" layoutY="40.0" prefHeight="319.0" prefWidth="478.0" />
+    </children>
+</AnchorPane>
