@@ -32,6 +32,7 @@ import eus.ehu.bum4_restapi.utils.PropertyManager;
 import eus.ehu.bum4_restapi.utils.Constants;
 import eus.ehu.bum4_restapi.utils.HyperLinkRedirectListener;
 
+import javafx.scene.image.ImageView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -47,10 +48,23 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Properties;
 
+
 public class TootsController {
     /**
      * FXML members
      */
+
+    @FXML
+    private TextField NoTootsText;
+
+    @FXML
+    private ImageView noTootsBalotelli;
+
+    @FXML
+    private Label OAlabel;
+
+    @FXML
+    private Label PDlabel;
     @FXML
     private RadioButton boosted;
 
@@ -103,7 +117,24 @@ public class TootsController {
             totalToots = restAPI.getObjectListSize();
 
             currentToot = (propCurr != -1)&&(propCurr <= totalToots) ? propCurr -1 : 0;
+            if(currentToot == 0){
+                NoTootsText.setText("This account has not any toot! :(");
+            }else{
+                author.setVisible(true);
+                PDlabel.setVisible(true);
+                OAlabel.setVisible(true);
+                date.setVisible(true);
+                boosted.setVisible(true);
+                webArea.setVisible(true);
+                next.setVisible(true);
+                previous.setVisible(true);
+                tootCount.setVisible(true);
+                tootLink.setVisible(true);
+                NoTootsText.setVisible(false);
+                noTootsBalotelli.setVisible(false);
 
+
+            }
             showTootData((Toot) restAPI.getObjectFromList(currentToot));
 
         } catch(Exception e){

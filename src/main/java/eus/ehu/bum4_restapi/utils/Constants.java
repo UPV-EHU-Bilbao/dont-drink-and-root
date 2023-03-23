@@ -42,6 +42,7 @@ public enum Constants {
      */
     USER_GERU("userid.geru"),
     USER_JUANAN("userid.juanan"),
+    USER_Iñaki("userid.Iñaki"),
 
     /**
      * Persistent data
