@@ -133,14 +133,14 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
         setTootList(list);
     }
 
-    public void convertJSONtoFollowersList(){
+    public List<Account> convertJSONtoFollowersList(){
         List<Account> list = getFollowers("accounts/" + accountId + "/followers");
-        setFollowersList(list);
+        return list;
     }
 
-    public void convertJSONtoFollowingList(){
+    public List<Account> convertJSONtoFollowingList(){
         List<Account> list = getFollowers("accounts/" + accountId + "/following");
-        setFollowingList(list);
+        return list;
     }
     @Override
     public JsonArray getPreviousJSONObject() {

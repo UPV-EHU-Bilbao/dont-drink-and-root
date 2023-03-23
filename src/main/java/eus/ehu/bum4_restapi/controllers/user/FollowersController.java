@@ -36,59 +36,41 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.reflect.TypeToken;
-
-/**
- * TODO: This needs to use MastodonAPI
- */
 
 public class FollowersController {
 
-
     @FXML
     private ListView<Account> followersView;
-    java.util.List<Account> accounts;
-
+    List<Account> accounts;
     RestAPI<?, ?> restAPI;
 
-    public java.util.List<Account> getFollowers(){
-        String id = "109897320631957665";
-        String body = restAPI.sendRequest("accounts/"+id+"/followers");
-
-        Gson gson = new Gson();
-        JsonArray jsonArray = gson.fromJson(body, JsonArray.class);
-
-        Type accountList = new TypeToken<ArrayList<Account>>() {}.getType();
-        List<Account> accounts = gson.fromJson(jsonArray.getAsJsonArray(), accountList);
-
-        return accounts;
-    }
 
     @FXML
-    public void initialize() throws IOException {
-        restAPI = new MastodonAPI(PropertyManager.getProperty(Constants.USER_JUANAN));
-        accounts = getFollowers();
+    public void initialize(){
+        try {
+            restAPI = new MastodonAPI(PropertyManager.getProperty(Constants.USER_JUANAN));
 
-        ObservableList<Account> items = FXCollections.observableList(accounts);
+            accounts = restAPI.convertJSONtoFollowersList();
 
-        if(followersView != null){
-            followersView.setItems(items);
-            followersView.setCellFactory(param -> {
-                var cell = new UniqueFollowerController();
-                cell.setOnMouseClicked((evt) -> {
-                    Account account = cell.getItem();
-                    if(account!=null) {
-                        System.out.println(account.getDisplay_name());
-                    }
+            ObservableList<Account> items = FXCollections.observableList(accounts);
+
+            if(followersView != null){
+                followersView.setItems(items);
+                followersView.setCellFactory(param -> {
+                    var cell = new UniqueFollowingController();
+                    cell.setOnMouseClicked((evt) -> {
+                        Account account = cell.getItem();
+                        if(account!=null) {
+                            System.out.println(account.getDisplay_name());
+                        }
+                    });
+                    return cell;
                 });
-                return cell;
-            });
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
     }
 }
