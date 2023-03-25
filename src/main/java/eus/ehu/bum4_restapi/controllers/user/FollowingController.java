@@ -30,7 +30,10 @@ import eus.ehu.bum4_restapi.model.Account;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -50,7 +53,16 @@ import com.google.gson.reflect.TypeToken;
 public class FollowingController {
 
     @FXML
+    private TextField noFollowingText;
+    @FXML
     private ListView<Account> followersView;
+
+    @FXML
+    private Label labelFollow;
+
+
+    @FXML
+    private ImageView therockPic;
     List<Account> accounts;
 
     private String request(String endpoint){
@@ -78,7 +90,8 @@ public class FollowingController {
     }
 
     public List<Account> getFollowers(){
-        String id = "109897320631957665";
+        String id = "109842111446764244";
+
         String body = request("accounts/"+id+"/following");
 
         Gson gson = new Gson();
@@ -96,19 +109,27 @@ public class FollowingController {
         accounts = getFollowers();
 
         ObservableList<Account> items = FXCollections.observableList(accounts);
+        if(items.size()<1) {
+            noFollowingText.setVisible(true);
+            noFollowingText.setText("You are not following anyone :(");
+            therockPic.setVisible(true);
+            labelFollow.setVisible(true);
 
-        if(followersView != null){
-            followersView.setItems(items);
-            followersView.setCellFactory(param -> {
-                var cell = new UniqueFollowingController();
-                cell.setOnMouseClicked((evt) -> {
-                    Account account = cell.getItem();
-                    if(account!=null) {
-                        System.out.println(account.getDisplay_name());
-                    }
+        }else {
+            if (followersView != null) {
+                followersView.setVisible(true);
+                followersView.setItems(items);
+                followersView.setCellFactory(param -> {
+                    var cell = new UniqueFollowingController();
+                    cell.setOnMouseClicked((evt) -> {
+                        Account account = cell.getItem();
+                        if (account != null) {
+                            System.out.println(account.getDisplay_name());
+                        }
+                    });
+                    return cell;
                 });
-                return cell;
-            });
+            }
         }
     }
 }

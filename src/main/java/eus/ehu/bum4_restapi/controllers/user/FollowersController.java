@@ -43,6 +43,8 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 
 /**
  * TODO: This needs to use MastodonAPI
@@ -54,11 +56,16 @@ public class FollowersController {
     @FXML
     private ListView<Account> followersView;
     java.util.List<Account> accounts;
-
+    @FXML
+    private TextField noFollowerText;
+    @FXML
+    private ImageView pepoImg;
     RestAPI<?, ?> restAPI;
 
     public java.util.List<Account> getFollowers(){
-        String id = "109897320631957665";
+        String id = "109842111446764244";
+
+
         String body = restAPI.sendRequest("accounts/"+id+"/followers");
 
         Gson gson = new Gson();
@@ -77,18 +84,26 @@ public class FollowersController {
 
         ObservableList<Account> items = FXCollections.observableList(accounts);
 
-        if(followersView != null){
-            followersView.setItems(items);
-            followersView.setCellFactory(param -> {
-                var cell = new UniqueFollowerController();
-                cell.setOnMouseClicked((evt) -> {
-                    Account account = cell.getItem();
-                    if(account!=null) {
-                        System.out.println(account.getDisplay_name());
-                    }
+        if(items.size()<1){
+        noFollowerText.setVisible(true);
+        noFollowerText.setText("You don't have any follower yet :(");
+        pepoImg.setVisible(true);
+
+        }else {
+            followersView.setVisible(true);
+            if (followersView != null) {
+                followersView.setItems(items);
+                followersView.setCellFactory(param -> {
+                    var cell = new UniqueFollowerController();
+                    cell.setOnMouseClicked((evt) -> {
+                        Account account = cell.getItem();
+                        if (account != null) {
+                            System.out.println(account.getDisplay_name());
+                        }
+                    });
+                    return cell;
                 });
-                return cell;
-            });
+            }
         }
     }
 }
