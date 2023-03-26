@@ -49,7 +49,7 @@ public class FollowersController {
     @FXML
     public void initialize(){
         try {
-            restAPI = new MastodonAPI(PropertyManager.getProperty(Constants.USER_JUANAN));
+            restAPI = new MastodonAPI();
 
             accounts = restAPI.convertJSONtoFollowersList();
 

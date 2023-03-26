@@ -94,7 +94,7 @@ public class TootsController {
 
             propCurr = Integer.parseInt(PropertyManager.getProperty(Constants.CURRENT_TOOT));
 
-            restAPI = new MastodonAPI(PropertyManager.getProperty(Constants.USER_JUANAN));
+            restAPI = new MastodonAPI();
             webEngine = webArea.getEngine();
 
             webArea.getEngine().getLoadWorker().stateProperty().addListener(new HyperLinkRedirectListener(webArea));
