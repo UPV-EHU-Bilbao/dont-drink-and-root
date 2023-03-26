@@ -32,6 +32,7 @@ import eus.ehu.bum4_restapi.model.Account;
 import eus.ehu.bum4_restapi.model.Toot;
 
 import eus.ehu.bum4_restapi.utils.Constants;
+import eus.ehu.bum4_restapi.utils.PropertyManager;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -50,19 +51,9 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
 
     private static MastodonAPI instance;
 
-    public MastodonAPI(String userId) {
-        accountId = userId;
+    public MastodonAPI() throws IOException {
+        accountId = PropertyManager.getProperty(Constants.USER_JUANAN);
         resetTootList();
-    }
-
-    public static MastodonAPI getAPIHandler(String userId){
-        if (instance == null){
-            instance = new MastodonAPI(userId);
-        }
-        if (!instance.accountId.equals(userId)){
-            instance = new MastodonAPI(userId);
-        }
-        return instance;
     }
 
     private String request(String endpoint){

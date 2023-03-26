@@ -29,24 +29,13 @@ import eus.ehu.bum4_restapi.api.MastodonAPI;
 import eus.ehu.bum4_restapi.api.RestAPI;
 import eus.ehu.bum4_restapi.model.Account;
 
-import eus.ehu.bum4_restapi.utils.Constants;
-import eus.ehu.bum4_restapi.utils.PropertyManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.reflect.TypeToken;
 
 /**
  * TODO: This needs to use MastodonAPI
@@ -62,7 +51,7 @@ public class FollowingController {
     @FXML
     public void initialize(){
         try {
-            restAPI = new MastodonAPI(PropertyManager.getProperty(Constants.USER_JUANAN));
+            restAPI = new MastodonAPI();
 
             accounts = restAPI.convertJSONtoFollowingList();
 
