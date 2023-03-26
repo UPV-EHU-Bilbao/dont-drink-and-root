@@ -62,12 +62,6 @@ public class AppController {
     }
 
     /**
-     * Ojo, Unai y compañia:
-     * El app-view tiene un border pane (5 regiones donde colocar cacharros)
-     * Entonces, cada vez que se hace click un botón, depende de cual sea,
-     * Se carga el view correspondiente (user-followers, user-toots, etc)
-     * PERO, el "main" de estos es un Anchor, que va por nodos y se embebe
-     * en la región "center" del border pane del app (éste)
      * @param view String con el nombre de la vista a.
      */
     public void loadViewOnCenter(String view) {

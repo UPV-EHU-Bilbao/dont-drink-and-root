@@ -26,13 +26,24 @@
 package eus.ehu.bum4_restapi.utils;
 
 public enum Constants {
+
     BASE_PATH("base.path"),
+
+    /**
+     * API calls
+     */
+    ACCOUNTS("accounts/"),
+
+    ENDPOINT_FOLLOWERS("/followers"),
+    ENDPOINT_FOLLOWING("/following"),
+    ENDPOINT_STATUSES("/statuses"),
 
     /**
      * Views
      */
     USER_FOLLOWERS_VIEW("user.followers.view"),
     USER_FOLLOWING_VIEW("user.following.view"),
+    USER_UNIQUEFOLLOW_VIEW("user.uniquefollow.view"),
     USER_TOOTS_VIEW("user.toots.view"),
 
     APP_VIEW("app.view"),
@@ -57,4 +68,7 @@ public enum Constants {
     public String getKey() {
         return key;
     }
+
+    @Override
+    public String toString(){ return key; }
 }

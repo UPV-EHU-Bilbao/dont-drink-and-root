@@ -99,7 +99,7 @@ public class TootsController {
 
             webArea.getEngine().getLoadWorker().stateProperty().addListener(new HyperLinkRedirectListener(webArea));
 
-            restAPI.convertJSONtoList();
+            restAPI.setJSONtoList();
             totalToots = restAPI.getObjectListSize();
 
             currentToot = (propCurr != -1)&&(propCurr <= totalToots) ? propCurr -1 : 0;

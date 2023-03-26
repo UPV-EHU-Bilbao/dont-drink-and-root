@@ -19,5 +19,6 @@ module eus.ehu.bum4_restapi {
     exports eus.ehu.bum4_restapi.api;
     exports eus.ehu.bum4_restapi.model to com.google.gson;
     exports eus.ehu.bum4_restapi.controllers.user;
+    exports eus.ehu.bum4_restapi.utils;
     opens eus.ehu.bum4_restapi.controllers.user to javafx.fxml;
 }

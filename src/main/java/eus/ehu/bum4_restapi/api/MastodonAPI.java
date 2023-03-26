@@ -52,7 +52,7 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
     private static MastodonAPI instance;
 
     public MastodonAPI() throws IOException {
-        accountId = PropertyManager.getProperty(Constants.USER_JUANAN);
+        accountId = PropertyManager.getProperty(Constants.USER_GERU);
         resetTootList();
     }
 
@@ -119,20 +119,11 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
     }
 
     @Override
-    public void convertJSONtoList(){
-        List<Toot> list = getToots("accounts/" + accountId + "/statuses");
+    public void setJSONtoList(){
+        List<Toot> list = getToots(Constants.ACCOUNTS + accountId + Constants.ENDPOINT_STATUSES);
         setTootList(list);
     }
 
-    public List<Account> convertJSONtoFollowersList(){
-        List<Account> list = getFollowers("accounts/" + accountId + "/followers");
-        return list;
-    }
-
-    public List<Account> convertJSONtoFollowingList(){
-        List<Account> list = getFollowers("accounts/" + accountId + "/following");
-        return list;
-    }
     @Override
     public JsonArray getPreviousJSONObject() {
         return null;
@@ -153,7 +144,7 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
 
     @Override
     public List<Account> getObjectList(String endpoint) {
-        return getFollowers(endpoint);
+        return getFollowers(Constants.ACCOUNTS + accountId + endpoint);
     }
 
     @Override

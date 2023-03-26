@@ -26,20 +26,16 @@
 package eus.ehu.bum4_restapi.api;
 
 import com.google.gson.JsonArray;
-import eus.ehu.bum4_restapi.model.Account;
+import eus.ehu.bum4_restapi.utils.Constants;
 
 import java.util.List;
 
 public interface RestAPI<T, V> {
     public String sendRequest(String endpoint);
-    public void convertJSONtoList();
+    public void setJSONtoList();
     public JsonArray getPreviousJSONObject();
     public JsonArray getNextJSONObject();
     public T getObjectFromList(int index);
     public List<V> getObjectList(String endpoint);
     public int getObjectListSize();
-
-    List<Account> convertJSONtoFollowersList();
-
-    List<Account> convertJSONtoFollowingList();
 }

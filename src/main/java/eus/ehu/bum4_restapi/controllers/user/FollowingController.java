@@ -26,53 +26,23 @@
 package eus.ehu.bum4_restapi.controllers.user;
 
 import eus.ehu.bum4_restapi.api.MastodonAPI;
-import eus.ehu.bum4_restapi.api.RestAPI;
-import eus.ehu.bum4_restapi.model.Account;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import eus.ehu.bum4_restapi.model.Account;
+import eus.ehu.bum4_restapi.utils.Constants;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 
 import java.io.IOException;
 import java.util.List;
 
-/**
- * TODO: This needs to use MastodonAPI
- */
-public class FollowingController {
+public class FollowingController extends FollowController {
 
     @FXML
-    private ListView<Account> followersView;
-    List<Account> accounts;
-    RestAPI<?, ?> restAPI;
-
+    private ListView<Account> listView;
 
     @FXML
-    public void initialize(){
-        try {
-            restAPI = new MastodonAPI();
-
-            accounts = restAPI.convertJSONtoFollowingList();
-
-            ObservableList<Account> items = FXCollections.observableList(accounts);
-
-            if(followersView != null){
-                followersView.setItems(items);
-                followersView.setCellFactory(param -> {
-                    var cell = new UniqueFollowingController();
-                    cell.setOnMouseClicked((evt) -> {
-                        Account account = cell.getItem();
-                        if(account!=null) {
-                            System.out.println(account.getDisplay_name());
-                        }
-                    });
-                    return cell;
-                });
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    public void initialize() throws IOException {
+        restAPI = new MastodonAPI();
+        super.initialize((List<Account>)restAPI.getObjectList(Constants.ENDPOINT_FOLLOWING.getKey()), listView);
     }
 }

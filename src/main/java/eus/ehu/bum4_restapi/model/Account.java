@@ -105,11 +105,11 @@ public class Account {
         return display_name;
     }
 
-    public int getFollowers_count(){
+    public int getFollowersCount(){
         return followers_count;
     }
 
-    public int getFollowing_count(){
+    public int getFollowingCount(){
         return following_count;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * This file is part of the Project-MastodonFX project.
+ * This file is part of the BUM4_REST-API project.
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -25,24 +25,37 @@
 
 package eus.ehu.bum4_restapi.controllers.user;
 
-import eus.ehu.bum4_restapi.api.MastodonAPI;
-
+import eus.ehu.bum4_restapi.api.RestAPI;
 import eus.ehu.bum4_restapi.model.Account;
-import eus.ehu.bum4_restapi.utils.Constants;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 
-import java.io.IOException;
 import java.util.List;
 
-public class FollowersController extends FollowController {
+
+public class FollowController {
+
+    protected RestAPI<?, ?> restAPI;
 
     @FXML
-    private ListView<Account> followersView;
+    public void initialize(List<Account> list, ListView<Account> view)  {
 
-    @FXML
-    public void initialize() throws IOException {
-        restAPI = new MastodonAPI();
-        super.initialize((List<Account>)restAPI.getObjectList(Constants.ENDPOINT_FOLLOWERS.getKey()), followersView);
+        ObservableList<Account> items = FXCollections.observableList(list);
+
+        if(view != null){
+            view.setItems(items);
+            view.setCellFactory(param -> {
+                var cell = new UniqueFollowingController();
+                cell.setOnMouseClicked((evt) -> {
+                    Account account = cell.getItem();
+                    if(account!=null) {
+                        System.out.println(account.getDisplay_name());
+                    }
+                });
+                return cell;
+            });
+        }
     }
 }
