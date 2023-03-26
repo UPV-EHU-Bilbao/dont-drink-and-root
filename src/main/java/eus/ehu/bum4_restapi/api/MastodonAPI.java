@@ -48,9 +48,6 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
     List<Account> followersList;
     List<Account> followingList;
 
-
-    private static MastodonAPI instance;
-
     public MastodonAPI() throws IOException {
         accountId = PropertyManager.getProperty(Constants.USER_GERU);
         resetTootList();
@@ -61,7 +58,7 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url("https://mastodon.social/api/v1/" + endpoint)
+                .url(Constants.API_BASE + endpoint)
                 .get()
                 .addHeader("Authorization", "Bearer " + System.getenv("TOKEN-MFX"))
                 .build();

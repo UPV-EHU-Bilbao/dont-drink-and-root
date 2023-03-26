@@ -13,7 +13,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
-public class UniqueFollowingController extends ListCell<Account> {
+public class UserFrameController extends ListCell<Account> {
 
     private FXMLLoader fxmlLoader;
     @FXML
@@ -45,7 +45,7 @@ public class UniqueFollowingController extends ListCell<Account> {
 
         if (fxmlLoader == null) {
             try {
-                fxmlLoader = new FXMLLoader(getClass().getResource(PropertyManager.getProperty(Constants.USER_UNIQUEFOLLOW_VIEW)));
+                fxmlLoader = new FXMLLoader(getClass().getResource(PropertyManager.getProperty(Constants.USER_FRAME_VIEW)));
                 fxmlLoader.setController(this);
                 fxmlLoader.load();
             } catch (IOException e) {

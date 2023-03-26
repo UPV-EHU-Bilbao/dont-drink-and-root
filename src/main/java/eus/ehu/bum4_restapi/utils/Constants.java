@@ -32,6 +32,7 @@ public enum Constants {
     /**
      * API calls
      */
+    API_BASE("https://mastodon.social/api/v1/"),
     ACCOUNTS("accounts/"),
 
     ENDPOINT_FOLLOWERS("/followers"),
@@ -43,7 +44,7 @@ public enum Constants {
      */
     USER_FOLLOWERS_VIEW("user.followers.view"),
     USER_FOLLOWING_VIEW("user.following.view"),
-    USER_UNIQUEFOLLOW_VIEW("user.uniquefollow.view"),
+    USER_FRAME_VIEW("user.frame.view"),
     USER_TOOTS_VIEW("user.toots.view"),
 
     APP_VIEW("app.view"),

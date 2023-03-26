@@ -47,7 +47,7 @@ public class FollowController {
         if(view != null){
             view.setItems(items);
             view.setCellFactory(param -> {
-                var cell = new UniqueFollowingController();
+                var cell = new UserFrameController();
                 cell.setOnMouseClicked((evt) -> {
                     Account account = cell.getItem();
                     if(account!=null) {
