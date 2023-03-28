@@ -1,5 +1,5 @@
 /*
- * This file is part of the BUM4_REST-API project.
+ * This file is part of the MASTODONFX-RESTAPI project.
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
