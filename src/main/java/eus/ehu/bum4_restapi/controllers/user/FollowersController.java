@@ -33,6 +33,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.List;
 
 public class FollowersController extends FollowController {
@@ -42,7 +43,15 @@ public class FollowersController extends FollowController {
 
     @FXML
     public void initialize() throws IOException {
+
+        //  Start timer
+        Instant start = Instant.now();
+
         restAPI = new MastodonAPI();
         super.initialize((List<Account>)restAPI.getObjectList(Constants.ENDPOINT_FOLLOWERS.getKey()), followersView);
+
+        //  Stop timer and print taken time
+        Instant end = Instant.now();
+        System.out.println("Time taken to load followers: " + java.time.Duration.between(start, end).toMillis() + "ms");
     }
 }

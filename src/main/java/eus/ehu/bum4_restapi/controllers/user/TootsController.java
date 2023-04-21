@@ -45,6 +45,7 @@ import java.awt.*;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.Properties;
 
 public class TootsController {
@@ -87,6 +88,10 @@ public class TootsController {
 
     @FXML
     public void initialize(){
+
+        //  Start timer
+        Instant start = Instant.now();
+
         try{
             int propCurr;
             boosted.setDisable(true);
@@ -109,6 +114,10 @@ public class TootsController {
         } catch(Exception e){
             System.out.println("[EXCEPTION] " + e.getMessage());
         }
+
+        //  End timer and print taken time
+        Instant end = Instant.now();
+        System.out.println("Time taken to load toots: " + java.time.Duration.between(start, end).toMillis() + "ms");
     }
 
     @FXML
