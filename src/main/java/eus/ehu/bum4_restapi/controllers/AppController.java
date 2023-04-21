@@ -59,6 +59,7 @@ public class AppController {
 
     @FXML
     public void initialize() throws IOException {
+        handleLoadUserToots();
     }
 
     /**
@@ -73,21 +74,20 @@ public class AppController {
             e.printStackTrace();
         }
     }
-
     @FXML
-    void handleLoadUserToots(ActionEvent event) throws IOException {
+    void handleLoadUserToots() throws IOException {
         System.out.println("Loading User Toot view...");
         loadViewOnCenter(PropertyManager.getProperty(Constants.USER_TOOTS_VIEW));
     }
 
     @FXML
-    void handleLoadUserFollowers(ActionEvent event) throws IOException {
+    void handleLoadUserFollowers() throws IOException {
         System.out.println("Loading User Followers...");
         loadViewOnCenter(PropertyManager.getProperty(Constants.USER_FOLLOWERS_VIEW));
     }
 
     @FXML
-    void handleLoadUserFollowing(ActionEvent event) throws IOException {
+    void handleLoadUserFollowing() throws IOException {
         System.out.println("Loading User Following...");
         loadViewOnCenter(PropertyManager.getProperty(Constants.USER_FOLLOWING_VIEW));
     }
