@@ -29,6 +29,7 @@ import eus.ehu.bum4_restapi.api.MastodonAPI;
 
 import eus.ehu.bum4_restapi.model.Account;
 import eus.ehu.bum4_restapi.utils.Constants;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
@@ -49,7 +50,12 @@ public class FollowingController extends FollowController {
         Instant start = Instant.now();
 
         restAPI = new MastodonAPI();
-        super.initialize((List<Account>)restAPI.getObjectList(Constants.ENDPOINT_FOLLOWING.getKey()), followingView);
+        new Thread(() -> {
+            List<Account> list = (List<Account>)restAPI.getObjectList(Constants.ENDPOINT_FOLLOWING.getKey());
+            Platform.runLater(() -> {
+                super.initialize(list, followingView);
+            });
+        }).start();
 
         //  Stop timer and print taken time
         Instant end = Instant.now();
