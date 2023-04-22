@@ -13,7 +13,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
-public class UserFrameController extends ListCell<Account> {
+public class UserFrameController {
 
     private FXMLLoader fxmlLoader;
     @FXML
@@ -35,13 +35,7 @@ public class UserFrameController extends ListCell<Account> {
     private TextField username;
 
 
-    protected void updateItem(Account item, boolean empty) {
-        super.updateItem(item, empty);
-        if (empty || item == null) {
-            setGraphic(null);
-            setText(null);
-            return;
-        }
+    public UserFrameController(Account item) {
 
         if (fxmlLoader == null) {
             try {
@@ -58,9 +52,10 @@ public class UserFrameController extends ListCell<Account> {
         followers.setText("" + item.getFollowersCount());
         following.setText("" + item.getFollowingCount());
         avatar.setImage(new Image(item.getAvatar()));
+    }
 
-        setText(null);
-        setGraphic(listItem);
+    public AnchorPane getAnchorPane(){
+        return listItem;
     }
 
 }

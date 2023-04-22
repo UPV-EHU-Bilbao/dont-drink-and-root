@@ -29,6 +29,7 @@ import com.google.gson.JsonArray;
 import eus.ehu.bum4_restapi.utils.Constants;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public interface RestAPI<T, V> {
     public String sendRequest(String endpoint);
@@ -36,6 +37,7 @@ public interface RestAPI<T, V> {
     public JsonArray getPreviousJSONObject();
     public JsonArray getNextJSONObject();
     public T getObjectFromList(int index);
+    public CompletableFuture<T> getObjectFromListAsync(int index);
     public List<V> getObjectList(String endpoint);
     public int getObjectListSize();
 }

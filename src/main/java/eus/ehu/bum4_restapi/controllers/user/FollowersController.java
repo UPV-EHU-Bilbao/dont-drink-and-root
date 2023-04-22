@@ -29,17 +29,27 @@ import eus.ehu.bum4_restapi.api.MastodonAPI;
 
 import eus.ehu.bum4_restapi.model.Account;
 import eus.ehu.bum4_restapi.utils.Constants;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
+import javafx.scene.image.ImageView;
 
 public class FollowersController extends FollowController {
 
     @FXML
-    private ListView<Account> followersView;
+    private VBox followersView;
+
+    @FXML
+    private ImageView loadingImage;
+
+    @FXML
+    private ScrollPane scrollPane;
 
     @FXML
     public void initialize() throws IOException {
@@ -47,8 +57,19 @@ public class FollowersController extends FollowController {
         //  Start timer
         Instant start = Instant.now();
 
+        scrollPane.setVisible(false);
+        loadingImage.setVisible(true);
+
         restAPI = new MastodonAPI();
-        super.initialize((List<Account>)restAPI.getObjectList(Constants.ENDPOINT_FOLLOWERS.getKey()), followersView);
+        new Thread(() -> {
+            List<Account> list = (List<Account>) restAPI.getObjectList(Constants.ENDPOINT_FOLLOWERS.getKey());
+            Platform.runLater(() -> {
+                super.initialize(list, followersView);
+                scrollPane.setVisible(true);
+                loadingImage.setVisible(false);
+            });
+        }).start();
+
 
         //  Stop timer and print taken time
         Instant end = Instant.now();
