@@ -20,7 +20,7 @@
       <RadioButton fx:id="boosted" disable="true" layoutX="443.0" layoutY="50.0" mnemonicParsing="false" text="Boosted" />
       <WebView fx:id="webArea" layoutX="100.0" layoutY="171.0" prefHeight="199.0" prefWidth="375.0" />
       <Label fx:id="tootCount" layoutX="476.0" layoutY="378.0" text="Label" />
-      <Hyperlink fx:id="tootLink" layoutX="178.0" layoutY="407.0" prefHeight="31.0" prefWidth="233.0" text="See this toot on Mastodon!">
+      <Hyperlink fx:id="tootLink" layoutX="178.0" layoutY="407.0" onMouseClicked="#goToLink" prefHeight="31.0" prefWidth="261.0" text="See this toot on Mastodon!">
          <font>
             <Font size="18.0" />
          </font>

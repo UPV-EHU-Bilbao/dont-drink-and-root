@@ -32,12 +32,14 @@ import eus.ehu.bum4_restapi.utils.PropertyManager;
 import eus.ehu.bum4_restapi.utils.Constants;
 import eus.ehu.bum4_restapi.utils.HyperLinkRedirectListener;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
@@ -47,6 +49,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.Properties;
+import java.util.concurrent.CompletableFuture;
 
 public class TootsController {
     /**
@@ -86,11 +89,14 @@ public class TootsController {
     int currentToot;
     int totalToots;
 
+    Toot finalToot;
     @FXML
     public void initialize(){
 
         //  Start timer
         Instant start = Instant.now();
+
+        finalToot = null;
 
         try{
             int propCurr;
@@ -105,11 +111,18 @@ public class TootsController {
             webArea.getEngine().getLoadWorker().stateProperty().addListener(new HyperLinkRedirectListener(webArea));
 
             restAPI.setJSONtoList();
-            totalToots = restAPI.getObjectListSize();
 
             currentToot = (propCurr != -1)&&(propCurr <= totalToots) ? propCurr -1 : 0;
 
-            showTootData((Toot) restAPI.getObjectFromList(currentToot));
+            CompletableFuture<Toot> toot = (CompletableFuture<Toot>) restAPI.getObjectFromListAsync(currentToot);
+            toot.thenAcceptAsync(toot1 -> {
+                try {
+                    showTootData((Toot) toot1);
+                    totalToots = restAPI.getObjectListSize();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
 
         } catch(Exception e){
             System.out.println("[EXCEPTION] " + e.getMessage());
@@ -156,22 +169,20 @@ public class TootsController {
             toot = toot.getReblog();
             boosted.setSelected(true);
         }
-
         author.setText(toot.getUsername());
         date.setText(toot.getCreatedAt());
-
-        webEngine.loadContent("<body><div id='toot-area'>" + toot.getContent() + "</div></body>");
-        tootCount.setText((currentToot + 1) + "/" + totalToots);
-
-        Toot finalToot = toot;
-        tootLink.setOnAction(event -> {
-            try {
-                if (Desktop.isDesktopSupported())
-                    Desktop.getDesktop().browse(new URI(finalToot.getUri()));
-            } catch (IOException | URISyntaxException e) {
-                e.printStackTrace();
+        class MyThread extends Thread{
+            public void run(Toot toot){
+                Platform.runLater(() -> {
+                    webEngine.loadContent("<body><div id='toot-area'>" + toot.getContent() + "</div></body>");
+                    tootCount.setText((currentToot + 1) + "/" + totalToots);
+                });
             }
-        });
+        }
+        MyThread thread = new MyThread();
+        thread.run(toot);
+        finalToot = toot;
+
 
         /*
          * Input stream needs to be loaded, in order to preserve other variables.
@@ -185,5 +196,20 @@ public class TootsController {
 
         prop.setProperty("currenttoot", String.valueOf(currentToot + 1));
         prop.store(output, null);
+    }
+
+    @FXML
+    void goToLink(MouseEvent event) {
+        if (finalToot != null) {
+            new Thread(() -> {
+                try {
+                    if (Desktop.isDesktopSupported()) {
+                        Desktop.getDesktop().browse(new URI(finalToot.getUri()));
+                    }
+                } catch (IOException | URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
     }
 }
