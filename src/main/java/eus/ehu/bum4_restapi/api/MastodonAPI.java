@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class MastodonAPI implements RestAPI<Toot, Account> {
     List<Toot> tootList;
@@ -48,7 +49,10 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
     List<Account> followersList;
     List<Account> followingList;
 
+    private boolean tootListFilled;
+
     public MastodonAPI() throws IOException {
+        tootListFilled = false;
         accountId = PropertyManager.getProperty(Constants.USER_GERU);
         resetTootList();
     }
@@ -74,13 +78,15 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
         return result;
     }
 
-    private List<Toot> getToots(String endpoint){
-        Gson gson = new Gson();
-        String rq = request(endpoint);
-        JsonArray jsonArray = gson.fromJson(rq, JsonArray.class);
+    private CompletableFuture<List<Toot>> getToots(String endpoint){
+        return CompletableFuture.supplyAsync(() -> {
+            Gson gson = new Gson();
+            String rq = request(endpoint);
+            JsonArray jsonArray = gson.fromJson(rq, JsonArray.class);
 
-        Type statusList = new TypeToken<ArrayList<Toot>>() {}.getType();
-        return gson.fromJson(jsonArray.getAsJsonArray(), statusList);
+            Type statusList = new TypeToken<ArrayList<Toot>>() {}.getType();
+            return gson.fromJson(jsonArray.getAsJsonArray(), statusList);
+        });
     }
 
     public List<Account> getFollowers(String endpoint){
@@ -93,7 +99,9 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
     }
 
     public void setTootList(List<Toot> list){
+
         tootList = list;
+        tootListFilled = true;
     }
 
     public void resetTootList(){
@@ -115,10 +123,12 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
         return request(endpoint);
     }
 
+
+    //ENDPOINT: Constants.ACCOUNTS + accountId + Constants.ENDPOINT_STATUSES
     @Override
     public void setJSONtoList(){
-        List<Toot> list = getToots(Constants.ACCOUNTS + accountId + Constants.ENDPOINT_STATUSES);
-        setTootList(list);
+        CompletableFuture<List<Toot>> future = getToots(Constants.ACCOUNTS + accountId + Constants.ENDPOINT_STATUSES);
+        future.thenAcceptAsync(this::setTootList);
     }
 
     @Override
@@ -137,6 +147,19 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
             throw new ArrayIndexOutOfBoundsException();
 
         return tootList.get(index);
+    }
+
+    public CompletableFuture<Toot> getObjectFromListAsync(int index) throws ArrayIndexOutOfBoundsException {
+        return CompletableFuture.supplyAsync(() -> {
+            while (!tootListFilled){
+                try {
+                    Thread.sleep(5);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            return getObjectFromList(index);
+        });
     }
 
     @Override
