@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
-
+<?import javafx.scene.layout.VBox?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eus.ehu.bum4_restapi.controllers.user.FollowingController">
-    <children>
-        <ListView fx:id="listView" layoutX="61.0" layoutY="40.0" prefHeight="319.0" prefWidth="478.0" />
-    </children>
+   <children>
+      <ScrollPane layoutX="53.0" layoutY="25.0" prefHeight="350.0" prefWidth="494.0">
+         <content>
+            <VBox id="followingView" fx:id="followingView" prefHeight="200.0" prefWidth="459.0" />
+         </content>
+      </ScrollPane>
+   </children>
 </AnchorPane>

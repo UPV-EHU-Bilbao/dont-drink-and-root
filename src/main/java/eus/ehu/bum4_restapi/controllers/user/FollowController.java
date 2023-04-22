@@ -27,10 +27,11 @@ package eus.ehu.bum4_restapi.controllers.user;
 
 import eus.ehu.bum4_restapi.api.RestAPI;
 import eus.ehu.bum4_restapi.model.Account;
+import eus.ehu.bum4_restapi.utils.VboxUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
+import javafx.scene.layout.VBox;
 
 import java.util.List;
 
@@ -40,22 +41,12 @@ public class FollowController {
     protected RestAPI<?, ?> restAPI;
 
     @FXML
-    public void initialize(List<Account> list, ListView<Account> view)  {
+    public void initialize(List<Account> list, VBox view)  {
 
         ObservableList<Account> items = FXCollections.observableList(list);
 
         if(view != null){
-            view.setItems(items);
-            view.setCellFactory(param -> {
-                var cell = new UserFrameController();
-                cell.setOnMouseClicked((evt) -> {
-                    Account account = cell.getItem();
-                    if(account!=null) {
-                        System.out.println(account.getDisplay_name());
-                    }
-                });
-                return cell;
-            });
+            VboxUtils.mapByValue(items, view.getChildren(), account -> new UserFrameController(account).getAnchorPane());
         }
     }
 }

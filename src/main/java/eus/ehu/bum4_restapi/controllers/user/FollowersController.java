@@ -31,6 +31,7 @@ import eus.ehu.bum4_restapi.model.Account;
 import eus.ehu.bum4_restapi.utils.Constants;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -39,7 +40,7 @@ import java.util.List;
 public class FollowersController extends FollowController {
 
     @FXML
-    private ListView<Account> followersView;
+    private VBox followersView;
 
     @FXML
     public void initialize() throws IOException {
