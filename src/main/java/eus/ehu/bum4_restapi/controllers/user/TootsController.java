@@ -39,6 +39,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -82,6 +83,25 @@ public class TootsController {
     @FXML
     private Hyperlink tootLink;
 
+    @FXML
+    private Label authText;
+
+    @FXML
+    private Label dateText;
+
+    private void showAll(boolean show){
+        boosted.setVisible(show);
+        tootCount.setVisible(show);
+        author.setVisible(show);
+        date.setVisible(show);
+        next.setVisible(show);
+        previous.setVisible(show);
+        webArea.setVisible(show);
+        tootLink.setVisible(show);
+        authText.setVisible(show);
+        dateText.setVisible(show);
+    }
+
     /**
      * Specific MainController class members.
      */
@@ -90,11 +110,18 @@ public class TootsController {
     int totalToots;
 
     Toot finalToot;
+
+    @FXML
+    private ImageView loadingImage;
+
     @FXML
     public void initialize(){
 
         //  Start timer
         Instant start = Instant.now();
+
+        showAll(false);
+        loadingImage.setVisible(true);
 
         finalToot = null;
 
@@ -122,6 +149,8 @@ public class TootsController {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+                loadingImage.setVisible(false);
+                showAll(true);
             });
 
         } catch(Exception e){
@@ -132,6 +161,7 @@ public class TootsController {
         Instant end = Instant.now();
         System.out.println("Time taken to load toots: " + java.time.Duration.between(start, end).toMillis() + "ms");
     }
+
 
     @FXML
     private void loadNextToot(ActionEvent event) {
