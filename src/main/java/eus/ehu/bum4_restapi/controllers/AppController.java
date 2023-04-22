@@ -74,21 +74,48 @@ public class AppController {
             e.printStackTrace();
         }
     }
+
+    void selectButton(String button){
+
+        String selected = "-fx-background-color: rgba(135, 206, 250, 0.5);";
+
+        switch (button) {
+            case "toots" -> {
+                userToots.setStyle(selected);
+                userFollowers.setStyle("-fx-background-color: white;");
+                userFollowing.setStyle("-fx-background-color: white;");
+            }
+            case "followers" -> {
+                userToots.setStyle("-fx-background-color: white;");
+                userFollowers.setStyle(selected);
+                userFollowing.setStyle("-fx-background-color: white;");
+            }
+            case "following" -> {
+                userToots.setStyle("-fx-background-color: white;");
+                userFollowers.setStyle("-fx-background-color: white;");
+                userFollowing.setStyle(selected);
+            }
+        }
+    }
     @FXML
     void handleLoadUserToots() throws IOException {
         System.out.println("Loading User Toot view...");
         loadViewOnCenter(PropertyManager.getProperty(Constants.USER_TOOTS_VIEW));
+        selectButton("toots");
+
     }
 
     @FXML
     void handleLoadUserFollowers() throws IOException {
         System.out.println("Loading User Followers...");
         loadViewOnCenter(PropertyManager.getProperty(Constants.USER_FOLLOWERS_VIEW));
+        selectButton("followers");
     }
 
     @FXML
     void handleLoadUserFollowing() throws IOException {
         System.out.println("Loading User Following...");
         loadViewOnCenter(PropertyManager.getProperty(Constants.USER_FOLLOWING_VIEW));
+        selectButton("following");
     }
 }
