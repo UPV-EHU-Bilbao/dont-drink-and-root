@@ -23,22 +23,38 @@
  *
  */
 
-package eus.ehu.bum4_restapi.api;
+package eus.ehu.bum4_restapi.controllers.user;
 
-import com.google.gson.JsonArray;
+import eus.ehu.bum4_restapi.api.MastodonAPI;
+import eus.ehu.bum4_restapi.api.RestAPI;
+import eus.ehu.bum4_restapi.model.Toot;
 import eus.ehu.bum4_restapi.utils.Constants;
+import eus.ehu.bum4_restapi.utils.HyperLinkRedirectListener;
+import eus.ehu.bum4_restapi.utils.PropertyManager;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 
-import java.util.List;
+import java.awt.*;
+import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.Instant;
+import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
 
-public interface RestAPI<T, V> {
-    public String sendRequest(String endpoint);
-    public void setJSONtoList(String endpoint);
-    public boolean login(String username, String apiKey, boolean save);
-    public JsonArray getPreviousJSONObject();
-    public JsonArray getNextJSONObject();
-    public T getObjectFromList(int index);
-    public CompletableFuture<T> getObjectFromListAsync(int index);
-    public List<V> getObjectList(String endpoint);
-    public int getObjectListSize();
+public class FavTootsController extends TootListTemplateController{
+
+    @Override
+    void getData() throws IOException {
+        restAPI.setJSONtoList(String.valueOf(Constants.ENDPOINT_FAVOURITES));
+    }
 }

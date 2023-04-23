@@ -152,5 +152,9 @@ public class Toot {
         return account;
     }
 
-    public Boolean isReblog(){ return reblog != null; }
+    public Boolean isReblog(){ return reblog != null;}
+
+    public void setFavourited(boolean fav){
+        favourited = fav;
+    }
 }
