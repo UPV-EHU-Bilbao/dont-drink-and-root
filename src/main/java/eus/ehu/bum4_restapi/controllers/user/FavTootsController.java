@@ -28,17 +28,16 @@ package eus.ehu.bum4_restapi.controllers.user;
 import eus.ehu.bum4_restapi.api.MastodonAPI;
 import eus.ehu.bum4_restapi.api.RestAPI;
 import eus.ehu.bum4_restapi.model.Toot;
-import eus.ehu.bum4_restapi.utils.PropertyManager;
 import eus.ehu.bum4_restapi.utils.Constants;
 import eus.ehu.bum4_restapi.utils.HyperLinkRedirectListener;
-
+import eus.ehu.bum4_restapi.utils.PropertyManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.web.WebEngine;
@@ -52,7 +51,7 @@ import java.time.Instant;
 import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
 
-public class TootsController {
+public class FavTootsController {
     /**
      * FXML members
      */
@@ -137,9 +136,7 @@ public class TootsController {
 
             webArea.getEngine().getLoadWorker().stateProperty().addListener(new HyperLinkRedirectListener(webArea));
 
-            //  IMPORTANT!: CHANGE LATER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            String currentAccountId = PropertyManager.getProperty(Constants.USER_GERU);
-            restAPI.setJSONtoList(Constants.ACCOUNTS + currentAccountId + Constants.ENDPOINT_STATUSES);
+            restAPI.setJSONtoList(String.valueOf(Constants.ENDPOINT_FAVOURITES));
 
             currentToot = (propCurr != -1)&&(propCurr <= totalToots) ? propCurr -1 : 0;
 
@@ -161,7 +158,7 @@ public class TootsController {
 
         //  End timer and print taken time
         Instant end = Instant.now();
-        System.out.println("Time taken to load toots: " + java.time.Duration.between(start, end).toMillis() + "ms");
+        System.out.println("Time taken to load favourite toots: " + java.time.Duration.between(start, end).toMillis() + "ms");
     }
 
 

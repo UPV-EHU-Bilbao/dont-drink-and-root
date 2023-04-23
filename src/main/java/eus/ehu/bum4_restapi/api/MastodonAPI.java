@@ -64,7 +64,7 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
         Request request = new Request.Builder()
                 .url(Constants.API_BASE + endpoint)
                 .get()
-                .addHeader("Authorization", "Bearer " + System.getenv("TOKEN-MFX"))
+                .addHeader("Authorization", "Bearer " + "hggrWHO9WCMzg2O7ayEgpIQFNsEwvGMWF3Wmu-AD9wc")
                 .build();
 
         try {
@@ -83,7 +83,6 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
             Gson gson = new Gson();
             String rq = request(endpoint);
             JsonArray jsonArray = gson.fromJson(rq, JsonArray.class);
-
             Type statusList = new TypeToken<ArrayList<Toot>>() {}.getType();
             return gson.fromJson(jsonArray.getAsJsonArray(), statusList);
         });
@@ -124,17 +123,16 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
     }
 
 
-    //ENDPOINT: Constants.ACCOUNTS + accountId + Constants.ENDPOINT_STATUSES
+    //ENDPOINT for toots: Constants.ACCOUNTS + accountId + Constants.ENDPOINT_STATUSES
+    //ENDPOINT for fav toots: String.valueOf(Constants.ENDPOINT_FAVOURITES
     @Override
-    public void setJSONtoList(){
-        CompletableFuture<List<Toot>> future = getToots(Constants.ACCOUNTS + accountId + Constants.ENDPOINT_STATUSES);
+    public void setJSONtoList(String endpoint){
+        CompletableFuture<List<Toot>> future = getToots(endpoint);
         future.thenAcceptAsync(this::setTootList);
     }
 
     @Override
-    public JsonArray getPreviousJSONObject() {
-        return null;
-    }
+    public JsonArray getPreviousJSONObject() {return null;}
 
     @Override
     public JsonArray getNextJSONObject() {

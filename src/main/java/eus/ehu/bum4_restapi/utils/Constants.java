@@ -38,6 +38,7 @@ public enum Constants {
     ENDPOINT_FOLLOWERS("/followers"),
     ENDPOINT_FOLLOWING("/following"),
     ENDPOINT_STATUSES("/statuses"),
+    ENDPOINT_FAVOURITES("/favourites"),
 
     /**
      * Views
@@ -46,6 +47,7 @@ public enum Constants {
     USER_FOLLOWING_VIEW("user.following.view"),
     USER_FRAME_VIEW("user.frame.view"),
     USER_TOOTS_VIEW("user.toots.view"),
+    USER_FAVOURITE_TOOTS_VIEW("user.favourite-toots.view"),
 
     APP_VIEW("app.view"),
 

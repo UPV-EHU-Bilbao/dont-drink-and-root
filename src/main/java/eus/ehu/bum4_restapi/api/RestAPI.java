@@ -33,7 +33,7 @@ import java.util.concurrent.CompletableFuture;
 
 public interface RestAPI<T, V> {
     public String sendRequest(String endpoint);
-    public void setJSONtoList();
+    public void setJSONtoList(String endpoint);
     public JsonArray getPreviousJSONObject();
     public JsonArray getNextJSONObject();
     public T getObjectFromList(int index);

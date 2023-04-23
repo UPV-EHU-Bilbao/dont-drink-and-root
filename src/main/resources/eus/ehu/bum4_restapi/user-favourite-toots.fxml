@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
+
+<AnchorPane fx:id="mainAnchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="637.0" prefWidth="704.0" style="-fx-background-color: #f0ffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eus.ehu.bum4_restapi.controllers.user.FavTootsController">
+   <children>
+      <TextField fx:id="author" editable="false" layoutX="155.0" layoutY="73.0" prefHeight="38.0" prefWidth="131.0" />
+      <TextField fx:id="date" cacheShape="false" editable="false" layoutX="368.0" layoutY="73.0" prefHeight="38.0" prefWidth="131.0">
+         <effect>
+            <Blend />
+         </effect></TextField>
+      <RadioButton fx:id="boosted" disable="true" layoutX="543.0" layoutY="83.0" mnemonicParsing="false" opacity="0.91" text="Boosted" />
+      <WebView fx:id="webArea" layoutX="56.0" layoutY="119.0" prefHeight="474.0" prefWidth="525.0" />
+      <Hyperlink fx:id="tootLink" layoutX="173.0" layoutY="531.0" onMouseClicked="#goToLink" prefHeight="31.0" prefWidth="261.0" text="See this toot on Mastodon!" underline="true">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Hyperlink>
+      <ImageView fx:id="loadingImage" fitHeight="150.0" fitWidth="200.0" layoutX="186.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../loading.gif" />
+         </image>
+      </ImageView>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="35.0" layoutX="76.0" layoutY="74.0" stroke="WHITE" strokeType="INSIDE" width="72.0" />
+      <Label fx:id="dateText" layoutX="83.0" layoutY="79.0" prefHeight="26.0" prefWidth="65.0" text="Author:">
+         <font>
+            <Font size="17.0" />
+         </font></Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="38.0" layoutX="499.0" layoutY="444.0" stroke="BLACK" strokeType="INSIDE" width="54.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="26.0" layoutX="303.0" layoutY="79.0" stroke="WHITE" strokeType="INSIDE" width="54.0" />
+      <Label fx:id="authText" layoutX="311.0" layoutY="79.0" prefHeight="26.0" prefWidth="97.0" text="Date:">
+         <font>
+            <Font size="17.0" />
+         </font></Label>
+      <Label fx:id="tootCount" layoutX="508.0" layoutY="449.0" prefHeight="18.0" prefWidth="108.0">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <Button fx:id="previous" layoutX="144.0" layoutY="439.0" mnemonicParsing="false" onAction="#loadPreviousToot" style="-fx-background-color: white;">
+         <graphic>
+            <ImageView fitHeight="46.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../arrowleft.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="next" layoutX="356.0" layoutY="439.0" mnemonicParsing="false" onAction="#loadNextToot" prefHeight="38.0" prefWidth="52.0" style="-fx-background-color: white;">
+         <graphic>
+            <ImageView fitHeight="46.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../arrowright.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+   </children>
+</AnchorPane>
