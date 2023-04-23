@@ -251,14 +251,14 @@ public abstract class TootListTemplateController {
     void favClicked(MouseEvent event){
         if (finalToot.isFavourited()){
             new Thread(() -> {
-                restAPI.sendRequest("/statuses/" + finalToot.getId() + Constants.ENDPOINT_MARK_TOOT_AS_NOT_FAV);
+                restAPI.sendRequest(Constants.ENDPOINT_STATUSES + "/" + finalToot.getId() + Constants.ENDPOINT_MARK_TOOT_AS_NOT_FAV);
             }).start();
             finalToot.setFavourited(false);
             favButton.setSelected(false);
         }
         else {
             new Thread(() -> {
-                restAPI.sendRequest("/statuses/" + finalToot.getId() + Constants.ENDPOINT_MARK_TOOT_AS_FAV);
+                restAPI.sendRequest(Constants.ENDPOINT_STATUSES + "/" + finalToot.getId() + Constants.ENDPOINT_MARK_TOOT_AS_FAV);
             }).start();
             finalToot.setFavourited(true);
             favButton.setSelected(true);
