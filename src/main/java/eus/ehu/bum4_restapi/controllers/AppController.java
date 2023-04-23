@@ -25,6 +25,8 @@
 
 package eus.ehu.bum4_restapi.controllers;
 
+import eus.ehu.bum4_restapi.controllers.user.FavTootsController;
+import eus.ehu.bum4_restapi.controllers.user.TootsController;
 import eus.ehu.bum4_restapi.utils.Constants;
 import eus.ehu.bum4_restapi.utils.PropertyManager;
 import javafx.fxml.FXML;
@@ -37,6 +39,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 public class AppController {
 
@@ -61,8 +65,12 @@ public class AppController {
 
     @FXML
     private ImageView TitleImg;
+
     @FXML
     private Label TitleLabel;
+
+    @FXML
+    private Button favouritesButton;
 
     @FXML
     public void initialize() throws IOException {
@@ -82,43 +90,80 @@ public class AppController {
         }
     }
 
+    /**
+     * @param view String con el nombre de la vista a.
+     * @param controllerClass String con el nombre de la clase controller.
+     */
+    public <T> void loadViewOnCenter(String view, Class<T> controllerClass) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(view));
+            Constructor<T> constructor = controllerClass.getDeclaredConstructor();
+            T controller = constructor.newInstance();
+            loader.setController(controller);
+            AnchorPane userTootAnchor = loader.load();
+            mainBorderPane.setCenter(userTootAnchor);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     void selectButton(String button){
 
         String selected = "-fx-background-color: rgba(135, 206, 250, 0.5);";
+        String not_selected = "-fx-background-color: white;";
 
         switch (button) {
             case "toots" -> {
                 userToots.setStyle(selected);
-                userFollowers.setStyle("-fx-background-color: white;");
-                userFollowing.setStyle("-fx-background-color: white;");
+                userFollowers.setStyle(not_selected);
+                userFollowing.setStyle(not_selected);
+                favouritesButton.setStyle(not_selected);
                 TitleLabel.setText("User toots");
               Image image = new Image(getClass().getResourceAsStream("/mailIcon.png"));
               TitleImg.setImage(image);
             }
             case "followers" -> {
-                userToots.setStyle("-fx-background-color: white;");
+                userToots.setStyle(not_selected);
                 userFollowers.setStyle(selected);
-                userFollowing.setStyle("-fx-background-color: white;");
+                userFollowing.setStyle(not_selected);
+                favouritesButton.setStyle(not_selected);
                 TitleLabel.setText("Followers");
                 Image image = new Image(getClass().getResourceAsStream("/followersIcon.png"));
                 TitleImg.setImage(image);
 
             }
             case "following" -> {
-                userToots.setStyle("-fx-background-color: white;");
-                userFollowers.setStyle("-fx-background-color: white;");
+                userToots.setStyle(not_selected);
+                userFollowers.setStyle(not_selected);
                 userFollowing.setStyle(selected);
+                favouritesButton.setStyle(not_selected);
                 TitleLabel.setText("Following");
                 Image image = new Image(getClass().getResourceAsStream("/following.png"));
                 TitleImg.setImage(image);
-
+            }
+            case "favourite-toots" -> {
+                userToots.setStyle(not_selected);
+                userFollowers.setStyle(not_selected);
+                userFollowing.setStyle(not_selected);
+                favouritesButton.setStyle(selected);
+                TitleLabel.setText("Favourite Toots");
+                Image image = new Image(getClass().getResourceAsStream("/following.png"));  //  Change picture
+                TitleImg.setImage(image);
             }
         }
     }
     @FXML
     void handleLoadUserToots() throws IOException {
         System.out.println("Loading User Toot view...");
-        loadViewOnCenter(PropertyManager.getProperty(Constants.USER_TOOTS_VIEW));
+        loadViewOnCenter(PropertyManager.getProperty(Constants.USER_TOOTS_VIEW), TootsController.class);
         selectButton("toots");
 
     }
@@ -135,6 +180,13 @@ public class AppController {
         System.out.println("Loading User Following...");
         loadViewOnCenter(PropertyManager.getProperty(Constants.USER_FOLLOWING_VIEW));
         selectButton("following");
+    }
+
+    @FXML
+    void handleFavourites() throws IOException {
+        System.out.println("Loading favourite toots...");
+        loadViewOnCenter(PropertyManager.getProperty(Constants.USER_TOOTS_VIEW), FavTootsController.class);
+        selectButton("favourite-toots");
     }
 
 }
