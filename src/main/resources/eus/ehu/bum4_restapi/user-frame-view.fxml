@@ -4,17 +4,30 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="listItem" prefHeight="167.0" prefWidth="437.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="listItem" prefHeight="181.0" prefWidth="658.0" style="-fx-background-color: #f0ffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <ImageView fx:id="avatar" fitHeight="115.0" fitWidth="118.0" layoutX="305.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" />
-        <Label layoutX="45.0" layoutY="41.0" text="Username:" />
-        <Label layoutX="22.0" layoutY="73.0" text="Display name:" />
-        <Label layoutX="45.0" layoutY="110.0" text="Followers:" />
-        <Label layoutX="155.0" layoutY="110.0" text="Following:" />
-        <TextField fx:id="username" editable="false" layoutX="125.0" layoutY="37.0" />
-        <TextField fx:id="displayName" editable="false" layoutX="125.0" layoutY="69.0" />
-        <TextField fx:id="followers" editable="false" layoutX="116.0" layoutY="106.0" prefHeight="25.0" prefWidth="36.0" />
-        <TextField fx:id="following" editable="false" layoutX="228.0" layoutY="106.0" prefHeight="25.0" prefWidth="36.0" />
+        <ImageView fx:id="avatar" fitHeight="159.0" fitWidth="166.0" layoutX="49.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true" />
+        <Label layoutX="283.0" layoutY="46.0" text="Username:">
+            <font>
+                <Font size="17.0" />
+            </font></Label>
+        <Label layoutX="307.0" layoutY="99.0" prefHeight="26.0" prefWidth="54.0" text="Name:">
+            <font>
+                <Font size="17.0" />
+            </font></Label>
+        <Label layoutX="240.0" layoutY="141.0" text="Followers:">
+            <font>
+                <Font size="17.0" />
+            </font></Label>
+        <Label layoutX="434.0" layoutY="139.0" prefHeight="26.0" prefWidth="77.0" text="Following:">
+            <font>
+                <Font size="17.0" />
+            </font></Label>
+        <TextField fx:id="username" editable="false" layoutX="384.0" layoutY="40.0" prefHeight="34.0" prefWidth="198.0" />
+        <TextField fx:id="displayName" editable="false" layoutX="384.0" layoutY="95.0" prefHeight="34.0" prefWidth="198.0" />
+        <TextField fx:id="followers" editable="false" layoutX="334.0" layoutY="140.0" prefHeight="26.0" prefWidth="54.0" />
+        <TextField fx:id="following" editable="false" layoutX="521.0" layoutY="140.0" prefHeight="26.0" prefWidth="53.0" />
     </children>
 </AnchorPane>
