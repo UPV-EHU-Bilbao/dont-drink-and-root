@@ -28,13 +28,15 @@ package eus.ehu.bum4_restapi.api;
 import com.google.gson.JsonArray;
 import eus.ehu.bum4_restapi.utils.Constants;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public interface RestAPI<T, V> {
-    public String sendRequest(String endpoint);
+    public String postRequest(String endpoint, Map<String, String> params);
+    public String getRequest(String endpoint);
     public void setJSONtoList(String endpoint);
-    public boolean login(String username, String apiKey, boolean save);
     public JsonArray getPreviousJSONObject();
     public JsonArray getNextJSONObject();
     public T getObjectFromList(int index);
