@@ -15,6 +15,7 @@ First of all, we have corrected some of the issues from the previous sprint:
     - Using asynchronous calls now.
     - Scrolling over users is fluent.
     - The domain model has been corrected.
+    - Improvement of the scene looking.
     
  And these are the new functionalities added to the project:
  
