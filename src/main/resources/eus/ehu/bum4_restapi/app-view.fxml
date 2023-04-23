@@ -137,16 +137,21 @@
                   <Font name="System Italic" size="15.0" />
                </font>
             </Label>
-            <TextArea prefHeight="200.0" prefWidth="264.0" promptText="Write here any thought you are having!">
+            <TextArea fx:id="TootText" prefHeight="200.0" prefWidth="264.0" promptText="Write here any thought you are having!">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
             </TextArea>
-            <Button mnemonicParsing="false" style="-fx-background-color: white;" text="Publish">
+            <Button fx:id="postButton" mnemonicParsing="false" onAction="#publishToot" style="-fx-background-color: white;" text="Publish">
                <VBox.margin>
                   <Insets left="30.0" top="5.0" />
                </VBox.margin>
             </Button>
+            <Label fx:id="PostedTootLabel" contentDisplay="CENTER" prefHeight="39.0" prefWidth="222.0" text="Label" textAlignment="CENTER" visible="false">
+               <VBox.margin>
+                  <Insets left="50.0" top="30.0" />
+               </VBox.margin>
+            </Label>
          </children>
       </VBox>
    </right>

@@ -61,6 +61,7 @@ public class FollowersController extends FollowController {
 
         scrollPane.setVisible(false);
         loadingImage.setVisible(true);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         restAPI = new MastodonAPI();
         new Thread(() -> {
