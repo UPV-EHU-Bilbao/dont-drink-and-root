@@ -26,6 +26,8 @@
 package eus.ehu.bum4_restapi.controllers;
 
 import eus.ehu.bum4_restapi.App;
+import eus.ehu.bum4_restapi.api.MastodonAPI;
+import eus.ehu.bum4_restapi.api.RestAPI;
 import eus.ehu.bum4_restapi.controllers.user.FavTootsController;
 import eus.ehu.bum4_restapi.controllers.user.TootsController;
 import eus.ehu.bum4_restapi.utils.Constants;
@@ -83,6 +85,8 @@ public class AppController {
 
     @FXML
     private Button favouritesButton;
+
+    RestAPI<?, ?> restAPI;
     
     @FXML
     public void initialize(){}
@@ -215,7 +219,10 @@ public class AppController {
    
     @FXML
     void publishToot(ActionEvent event) {
-        if (TootText.getText().length() > 0) {
+        if (!TootText.getText().equals("")) {
+            restAPI = new MastodonAPI();
+
+
             PostedTootLabel.setVisible(true);
             PostedTootLabel.setStyle("-fx-background-color:  #7fff00;");
             PostedTootLabel.setText("Your toot has been successfully posted!");

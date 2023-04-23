@@ -57,6 +57,7 @@ public class FollowingController extends FollowController {
 
         //  Start timer
         Instant start = Instant.now();
+
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVisible(false);
         loadingImage.setVisible(true);

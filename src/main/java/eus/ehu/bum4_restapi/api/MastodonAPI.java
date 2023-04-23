@@ -42,32 +42,41 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class MastodonAPI implements RestAPI<Toot, Account> {
     List<Toot> tootList;
-    SimpleAccount currentAccount;
+    //SimpleAccount currentAccount;
     List<Account> followersList;
     List<Account> followingList;
-    DbAccessManager db;
+    //DbAccessManager db;
     private boolean tootListFilled;
 
-    public MastodonAPI() throws IOException {
+    public MastodonAPI() {
         tootListFilled = false;
         resetTootList();
-        db = DbAccessManager.getInstance();
-        updateCurrentAccount();
+        //db = DbAccessManager.getInstance();
+        //updateCurrentAccount();
     }
 
+    /*
     public void updateCurrentAccount(){
         this.currentAccount = db.getCurrentAccount();
     }
+     */
 
-    private String request(String endpoint){
+    public String getRequest(String endpoint) {
         String result = "";
         OkHttpClient client = new OkHttpClient();
-        String token = currentAccount.getApikey();
-
+        String token = "";
+        try {
+            token = PropertyManager.getProperty(Constants.CURRENT_USER_API_KEY);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            System.out.println("Something went wrong. It's likely that the currentUserAPIKey isn't set");
+        }
         Request request = new Request.Builder()
                 .url(Constants.API_BASE + endpoint)
                 .get()
@@ -85,20 +94,29 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
         return result;
     }
 
-    private String request(String endpoint, String token){
+    public String postRequest(String endpoint, Map<String, String> params) {
+        String token = "";
+        try {
+            token = PropertyManager.getProperty(Constants.valueOf("currentUserAPIKey"));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            System.out.println("Something went wrong. It's likely that the currentUserAPIKey isn't set");
+        }
         String result = "";
         OkHttpClient client = new OkHttpClient();
 
-        RequestBody body = new FormBody.Builder()
-                //.add("", "")
-                .build();
+        FormBody.Builder builder = new FormBody.Builder();
+        for (Map.Entry<String, String> entry : params.entrySet()){
+            builder.add(entry.getKey(), entry.getValue());
+        }
+        RequestBody body = builder.build();
 
         Request request = new Request.Builder()
                 .url(Constants.API_BASE + endpoint)
-                .get()
+                .post(body)
                 .addHeader("Authorization", "Bearer " + token)
                 .build();
-
         try {
             Response response = client.newCall(request).execute();
             if (response.code() == 200) {
@@ -114,16 +132,16 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
     private CompletableFuture<List<Toot>> getToots(String endpoint){
         return CompletableFuture.supplyAsync(() -> {
             Gson gson = new Gson();
-            String rq = request(endpoint);
+            String rq = getRequest(endpoint);
             JsonArray jsonArray = gson.fromJson(rq, JsonArray.class);
             Type statusList = new TypeToken<ArrayList<Toot>>() {}.getType();
             return gson.fromJson(jsonArray.getAsJsonArray(), statusList);
         });
     }
 
-    public List<Account> getFollowers(String endpoint){
+    public List<Account> getFollowers(String endpoint) throws IOException {
         Gson gson = new Gson();
-        String rq = request(endpoint);
+        String rq = getRequest(endpoint);
         JsonArray jsonArray = gson.fromJson(rq, JsonArray.class);
 
         Type accountList = new TypeToken<ArrayList<Account>>() {}.getType();
@@ -131,7 +149,6 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
     }
 
     public void setTootList(List<Toot> list){
-
         tootList = list;
         tootListFilled = true;
     }
@@ -142,27 +159,6 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
 
     public int getTootListSize(){ return tootList.size(); }
 
-    public boolean login(String username, String apiKey, boolean save){
-
-        try {
-            Gson gson = new Gson();
-            String rq = request(Constants.ACCOUNTS + "verify_credentials", apiKey);
-            JsonObject account = gson.fromJson(rq, JsonObject.class);
-            String u = account.get("username").getAsString();
-            String accountId = account.get("id").getAsString();
-            if(u.equals(username)){
-                if(save) {
-                    db.addUser(username, apiKey, accountId);
-                }
-                db.addCurrentUser(username, apiKey, accountId);
-                updateCurrentAccount();
-                return true;
-            }
-            return false;
-        } catch (Exception e) {
-            return false;
-        }
-    }
 
     public void setFollowersList(List<Account> list){
         followersList = list;
@@ -172,12 +168,7 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
         followingList = list;
     }
 
-    //ENDPOINT for toots: Constants.ACCOUNTS + accountId + Constants.ENDPOINT_STATUSES
-    //ENDPOINT for fav toots: String.valueOf(Constants.ENDPOINT_FAVOURITES
-    @Override
-    public String sendRequest(String endpoint){
-        return request(endpoint);
-    }
+
 
 
     //ENDPOINT: Constants.ACCOUNTS + accountId + Constants.ENDPOINT_STATUSES
@@ -199,7 +190,6 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
     public Toot getObjectFromList(int index) throws ArrayIndexOutOfBoundsException {
         if(index < 0 || index >= tootList.size())
             throw new ArrayIndexOutOfBoundsException();
-
         return tootList.get(index);
     }
 
@@ -217,8 +207,12 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
     }
 
     @Override
-    public List<Account> getObjectList(String endpoint) {
-        return getFollowers(Constants.ACCOUNTS + currentAccount.getId() + endpoint);
+    public List<Account> getObjectList(String endpoint){
+        try {
+            return getFollowers(Constants.ACCOUNTS + PropertyManager.getProperty(Constants.CURRENT_USER_ID) + endpoint);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

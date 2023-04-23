@@ -58,6 +58,9 @@ public enum Constants {
      */
     USER_GERU("userid.geru"),
     USER_JUANAN("userid.juanan"),
+    CURRENT_USER_ID("currentUserID"),
+    CURRENT_USER_API_KEY("currentUserAPIKey"),
+    CURRENT_USERNAME("currentUsername"),
 
     /**
      * Persistent data
