@@ -31,14 +31,10 @@ import eus.ehu.bum4_restapi.utils.Constants;
 import eus.ehu.bum4_restapi.utils.PropertyManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 public class App extends Application {
     Scene loginScene;
