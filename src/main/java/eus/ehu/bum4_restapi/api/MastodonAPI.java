@@ -27,8 +27,11 @@ package eus.ehu.bum4_restapi.api;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import eus.ehu.bum4_restapi.database.DbAccessManager;
 import eus.ehu.bum4_restapi.model.Account;
+import eus.ehu.bum4_restapi.model.SimpleAccount;
 import eus.ehu.bum4_restapi.model.Toot;
 
 import eus.ehu.bum4_restapi.utils.Constants;
@@ -45,26 +48,53 @@ import java.util.concurrent.CompletableFuture;
 
 public class MastodonAPI implements RestAPI<Toot, Account> {
     List<Toot> tootList;
-    String accountId;
+    SimpleAccount currentAccount;
     List<Account> followersList;
     List<Account> followingList;
-
+    DbAccessManager db;
     private boolean tootListFilled;
 
     public MastodonAPI() throws IOException {
         tootListFilled = false;
-        accountId = PropertyManager.getProperty(Constants.USER_GERU);
         resetTootList();
+        db = DbAccessManager.getInstance();
+        updateCurrentAccount();
+    }
+
+    public void updateCurrentAccount(){
+        this.currentAccount = db.getCurrentAccount();
     }
 
     private String request(String endpoint){
+        String result = "";
+        OkHttpClient client = new OkHttpClient();
+        String token = currentAccount.getApikey();
+
+        Request request = new Request.Builder()
+                .url(Constants.API_BASE + endpoint)
+                .get()
+                .addHeader("Authorization", "Bearer " + token)
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.code() == 200) {
+                result = response.body().string();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private String request(String endpoint, String token){
         String result = "";
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
                 .url(Constants.API_BASE + endpoint)
                 .get()
-                .addHeader("Authorization", "Bearer " + System.getenv("TOKEN-MFX"))
+                .addHeader("Authorization", "Bearer " + token)
                 .build();
 
         try {
@@ -110,6 +140,28 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
 
     public int getTootListSize(){ return tootList.size(); }
 
+    public boolean login(String username, String apiKey, boolean save){
+
+        try {
+            Gson gson = new Gson();
+            String rq = request(Constants.ACCOUNTS + "verify_credentials", apiKey);
+            JsonObject account = gson.fromJson(rq, JsonObject.class);
+            String u = account.get("username").getAsString();
+            String accountId = account.get("id").getAsString();
+            if(u.equals(username)){
+                if(save) {
+                    db.addUser(username, apiKey, accountId);
+                }
+                db.addCurrentUser(username, apiKey, accountId);
+                updateCurrentAccount();
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public void setFollowersList(List<Account> list){
         followersList = list;
     }
@@ -127,7 +179,7 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
     //ENDPOINT: Constants.ACCOUNTS + accountId + Constants.ENDPOINT_STATUSES
     @Override
     public void setJSONtoList(){
-        CompletableFuture<List<Toot>> future = getToots(Constants.ACCOUNTS + accountId + Constants.ENDPOINT_STATUSES);
+        CompletableFuture<List<Toot>> future = getToots(Constants.ACCOUNTS + currentAccount.getId() + Constants.ENDPOINT_STATUSES);
         future.thenAcceptAsync(this::setTootList);
     }
 
@@ -164,11 +216,13 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
 
     @Override
     public List<Account> getObjectList(String endpoint) {
-        return getFollowers(Constants.ACCOUNTS + accountId + endpoint);
+        return getFollowers(Constants.ACCOUNTS + currentAccount.getId() + endpoint);
     }
 
     @Override
     public int getObjectListSize() {
         return getTootListSize();
     }
+
+
 }

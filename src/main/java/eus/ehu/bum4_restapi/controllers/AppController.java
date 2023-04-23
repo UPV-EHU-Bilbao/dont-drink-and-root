@@ -25,6 +25,7 @@
 
 package eus.ehu.bum4_restapi.controllers;
 
+import eus.ehu.bum4_restapi.App;
 import eus.ehu.bum4_restapi.utils.Constants;
 import eus.ehu.bum4_restapi.utils.PropertyManager;
 import javafx.fxml.FXML;
@@ -63,9 +64,12 @@ public class AppController {
     private ImageView TitleImg;
     @FXML
     private Label TitleLabel;
+    private App main;
 
     @FXML
-    public void initialize() throws IOException {
+    public void initialize(){}
+
+    public void onScene() throws IOException{
         handleLoadUserToots();
     }
 
@@ -137,4 +141,8 @@ public class AppController {
         selectButton("following");
     }
 
+    public void setMain(App a){
+        this.main = a;
+    }
+   
 }
