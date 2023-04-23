@@ -91,28 +91,14 @@ public abstract class TootListTemplateController {
     @FXML
     private RadioButton favButton;
 
-    private void showAll(boolean show){
-        favButton.setVisible(show);
-        boosted.setVisible(show);
-        tootCount.setVisible(show);
-        author.setVisible(show);
-        date.setVisible(show);
-        next.setVisible(show);
-        previous.setVisible(show);
-        webArea.setVisible(show);
-        tootLink.setVisible(show);
-        authText.setVisible(show);
-        dateText.setVisible(show);
-    }
-
     /**
      * Specific MainController class members.
      */
-    RestAPI<?, ?> restAPI;
-    int currentToot;
-    int totalToots;
+    protected static RestAPI<?, ?> restAPI;
+    private int currentToot;
+    private int totalToots;
 
-    Toot finalToot;
+    private Toot finalToot;
 
     @FXML
     private ImageView loadingImage;
@@ -135,7 +121,7 @@ public abstract class TootListTemplateController {
 
             propCurr = Integer.parseInt(PropertyManager.getProperty(Constants.CURRENT_TOOT));
 
-            restAPI = new MastodonAPI();
+            restAPI = MastodonAPI.getInstance();
             webEngine = webArea.getEngine();
 
             webArea.getEngine().getLoadWorker().stateProperty().addListener(new HyperLinkRedirectListener(webArea));
@@ -263,5 +249,19 @@ public abstract class TootListTemplateController {
             finalToot.setFavourited(true);
             favButton.setSelected(true);
         }
+    }
+
+    private void showAll(boolean show){
+        favButton.setVisible(show);
+        boosted.setVisible(show);
+        tootCount.setVisible(show);
+        author.setVisible(show);
+        date.setVisible(show);
+        next.setVisible(show);
+        previous.setVisible(show);
+        webArea.setVisible(show);
+        tootLink.setVisible(show);
+        authText.setVisible(show);
+        dateText.setVisible(show);
     }
 }

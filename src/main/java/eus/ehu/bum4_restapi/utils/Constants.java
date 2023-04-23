@@ -62,7 +62,12 @@ public enum Constants {
     /**
      * Persistent data
      */
-    CURRENT_TOOT("currenttoot");
+    CURRENT_TOOT("currenttoot"),
+
+    /**
+     * Placeholders
+     */
+    PLACEHOLDER_ACCOUNT("${accountID}");
 
     private final String key;
 

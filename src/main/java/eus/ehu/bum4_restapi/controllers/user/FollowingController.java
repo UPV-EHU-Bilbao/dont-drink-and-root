@@ -61,7 +61,7 @@ public class FollowingController extends FollowController {
         scrollPane.setVisible(false);
         loadingImage.setVisible(true);
 
-        restAPI = new MastodonAPI();
+        restAPI = MastodonAPI.getInstance();
         new Thread(() -> {
             List<Account> list = (List<Account>)restAPI.getObjectList(Constants.ENDPOINT_FOLLOWING.getKey());
             Platform.runLater(() -> {

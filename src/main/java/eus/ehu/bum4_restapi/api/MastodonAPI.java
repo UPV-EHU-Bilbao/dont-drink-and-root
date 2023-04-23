@@ -45,33 +45,39 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class MastodonAPI implements RestAPI<Toot, Account> {
-    List<Toot> tootList;
-    SimpleAccount currentAccount;
-    List<Account> followersList;
-    List<Account> followingList;
-    DbAccessManager db;
+    private List<Toot> tootList;
+    private SimpleAccount currentAccount;
+    private List<Account> followersList;
+    private List<Account> followingList;
+    private DbAccessManager db;
     private boolean tootListFilled;
+    private String apiKey;
+    private static MastodonAPI instance;
 
-    public MastodonAPI() throws IOException {
+    private MastodonAPI() {
         tootListFilled = false;
         resetTootList();
         db = DbAccessManager.getInstance();
         updateCurrentAccount();
     }
 
+    public static MastodonAPI getInstance(){
+        if (instance == null)
+            instance = new MastodonAPI();
+        return instance;
+    }
+
     public void updateCurrentAccount(){
-        this.currentAccount = db.getCurrentAccount();
+        currentAccount = db.getCurrentAccount();
     }
 
     private String request(String endpoint){
         String result = "";
         OkHttpClient client = new OkHttpClient();
-        String token = currentAccount.getApikey();
-
         Request request = new Request.Builder()
                 .url(Constants.API_BASE + endpoint)
                 .get()
-                .addHeader("Authorization", "Bearer " + token)
+                .addHeader("Authorization", "Bearer " + apiKey)
                 .build();
 
         try {
@@ -84,32 +90,6 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
         }
         return result;
     }
-
-    private String request(String endpoint, String token){
-        String result = "";
-        OkHttpClient client = new OkHttpClient();
-
-        RequestBody body = new FormBody.Builder()
-                //.add("", "")
-                .build();
-
-        Request request = new Request.Builder()
-                .url(Constants.API_BASE + endpoint)
-                .get()
-                .addHeader("Authorization", "Bearer " + token)
-                .build();
-
-        try {
-            Response response = client.newCall(request).execute();
-            if (response.code() == 200) {
-                result = response.body().string();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
 
     private CompletableFuture<List<Toot>> getToots(String endpoint){
         return CompletableFuture.supplyAsync(() -> {
@@ -131,22 +111,26 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
     }
 
     public void setTootList(List<Toot> list){
-
         tootList = list;
         tootListFilled = true;
     }
 
     public void resetTootList(){
         tootList = new ArrayList<>();
+        tootListFilled = false;
     }
 
     public int getTootListSize(){ return tootList.size(); }
 
+    /*
+      Esto no puede estar aqui, el API tiene que abstraerse de la DB, cuenta y demás
+     */
     public boolean login(String username, String apiKey, boolean save){
 
         try {
             Gson gson = new Gson();
-            String rq = request(Constants.ACCOUNTS + "verify_credentials", apiKey);
+            this.apiKey = apiKey;
+            String rq = request(Constants.ACCOUNTS + "verify_credentials");
             JsonObject account = gson.fromJson(rq, JsonObject.class);
             String u = account.get("username").getAsString();
             String accountId = account.get("id").getAsString();
@@ -183,7 +167,7 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
     //ENDPOINT: Constants.ACCOUNTS + accountId + Constants.ENDPOINT_STATUSES
     @Override
     public void setJSONtoList(String endpoint){
-        CompletableFuture<List<Toot>> future = getToots(endpoint);
+        CompletableFuture<List<Toot>> future = getToots(endpoint.replace(Constants.PLACEHOLDER_ACCOUNT.getKey(), currentAccount.getId()));
         future.thenAcceptAsync(this::setTootList);
     }
 
