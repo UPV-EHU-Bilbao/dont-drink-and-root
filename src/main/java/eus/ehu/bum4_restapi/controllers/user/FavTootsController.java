@@ -55,6 +55,6 @@ public class FavTootsController extends TootListTemplateController{
 
     @Override
     void getData() throws IOException {
-        restAPI.setJSONtoList(Constants.ENDPOINT_FAVOURITES.getKey());
+        restAPI.setJSONtoList(String.valueOf(Constants.ENDPOINT_FAVOURITES));
     }
 }

@@ -2,7 +2,6 @@ package eus.ehu.bum4_restapi.controllers;
 
 import eus.ehu.bum4_restapi.App;
 import eus.ehu.bum4_restapi.api.MastodonAPI;
-import eus.ehu.bum4_restapi.api.RestAPI;
 import eus.ehu.bum4_restapi.controllers.user.FollowController;
 import eus.ehu.bum4_restapi.database.DbAccessManager;
 import eus.ehu.bum4_restapi.model.Account;
@@ -40,12 +39,12 @@ public class LoginController {
     private Label infoLabel;
 
     private DbAccessManager db;
-    private static RestAPI<?, ?> restAPI;
+    private MastodonAPI restAPI;
 
     @FXML
     public void initialize() throws IOException {
         db = DbAccessManager.getInstance();
-        restAPI = MastodonAPI.getInstance();
+        restAPI = new MastodonAPI();
         db.deleteCurrentAccount();
         apiKeyField.setText("");
         usernameField.setText("");
