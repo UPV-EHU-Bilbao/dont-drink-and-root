@@ -27,10 +27,12 @@ package eus.ehu.bum4_restapi.controllers;
 
 import eus.ehu.bum4_restapi.utils.Constants;
 import eus.ehu.bum4_restapi.utils.PropertyManager;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
@@ -56,6 +58,11 @@ public class AppController {
 
     @FXML
     private Button userFollowing;
+
+    @FXML
+    private ImageView TitleImg;
+    @FXML
+    private Label TitleLabel;
 
     @FXML
     public void initialize() throws IOException {
@@ -84,16 +91,27 @@ public class AppController {
                 userToots.setStyle(selected);
                 userFollowers.setStyle("-fx-background-color: white;");
                 userFollowing.setStyle("-fx-background-color: white;");
+                TitleLabel.setText("User toots");
+              Image image = new Image(getClass().getResourceAsStream("/mailIcon.png"));
+              TitleImg.setImage(image);
             }
             case "followers" -> {
                 userToots.setStyle("-fx-background-color: white;");
                 userFollowers.setStyle(selected);
                 userFollowing.setStyle("-fx-background-color: white;");
+                TitleLabel.setText("Followers");
+                Image image = new Image(getClass().getResourceAsStream("/followersIcon.png"));
+                TitleImg.setImage(image);
+
             }
             case "following" -> {
                 userToots.setStyle("-fx-background-color: white;");
                 userFollowers.setStyle("-fx-background-color: white;");
                 userFollowing.setStyle(selected);
+                TitleLabel.setText("Following");
+                Image image = new Image(getClass().getResourceAsStream("/following.png"));
+                TitleImg.setImage(image);
+
             }
         }
     }
@@ -118,4 +136,5 @@ public class AppController {
         loadViewOnCenter(PropertyManager.getProperty(Constants.USER_FOLLOWING_VIEW));
         selectButton("following");
     }
+   
 }
