@@ -32,9 +32,11 @@ import eus.ehu.bum4_restapi.controllers.user.FavTootsController;
 import eus.ehu.bum4_restapi.controllers.user.TootsController;
 import eus.ehu.bum4_restapi.utils.Constants;
 import eus.ehu.bum4_restapi.utils.PropertyManager;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -46,6 +48,9 @@ import javafx.scene.layout.BorderPane;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class AppController {
 
@@ -219,20 +224,62 @@ public class AppController {
    
     @FXML
     void publishToot(ActionEvent event) {
-        if (!TootText.getText().equals("")) {
+        String text = TootText.getText();
+        if (!text.equals("")) {
             restAPI = new MastodonAPI();
-
-
-            PostedTootLabel.setVisible(true);
-            PostedTootLabel.setStyle("-fx-background-color:  #7fff00;");
-            PostedTootLabel.setText("Your toot has been successfully posted!");
+            PostedTootLabel.setText("Uploading toot...");
+            PostedTootLabel.setStyle("-fx-background-color: #ADD8E6");
             TootText.setText("");
-        }
-        else{
+            new Thread(() -> {
+                Map<String, String> params = new HashMap<>();
+                params.put("status", text);
+                String result = restAPI.postRequest(String.valueOf(Constants.ENDPOINT_STATUSES), params);
+                if (result.equals("200")) {
+                    Platform.runLater(() -> {
+                        PostedTootLabel.setVisible(true);
+                        PostedTootLabel.setStyle("-fx-background-color:  #7fff00;");
+                        PostedTootLabel.setText("The toot has been successfully posted! :)");
+                        new Thread(() -> {
+                            try {
+                                Thread.sleep(Long.parseLong(PropertyManager.getProperty(Constants.TOOT_INFO_TIME)));
+                                PostedTootLabel.setVisible(false);
+                            } catch (InterruptedException | IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }).start();
+                    });
+                } else {
+                    Platform.runLater(() -> {
+                        PostedTootLabel.setVisible(true);
+                        PostedTootLabel.setStyle("-fx-background-color: #FFFFE0");
+                        PostedTootLabel.setText("Something went wrong :(");
+                        new Thread(() -> {
+                            try {
+                                Thread.sleep(Long.parseLong(PropertyManager.getProperty(Constants.TOOT_INFO_TIME)));
+                                PostedTootLabel.setVisible(false);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }).start();
+                    });
+                }
+            }).start();
+        } else {
             PostedTootLabel.setVisible(true);
             PostedTootLabel.setText("Type something to post a toot!");
             PostedTootLabel.setStyle("-fx-background-color:  #ff4500;");
+            new Thread(() -> {
+                try {
+                    Thread.sleep(Long.parseLong(PropertyManager.getProperty(Constants.TOOT_INFO_TIME)));
+                    PostedTootLabel.setVisible(false);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }).start();
         }
     }
-
 }

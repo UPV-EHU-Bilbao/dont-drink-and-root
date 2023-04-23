@@ -97,7 +97,7 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
     public String postRequest(String endpoint, Map<String, String> params) {
         String token = "";
         try {
-            token = PropertyManager.getProperty(Constants.valueOf("currentUserAPIKey"));
+            token = PropertyManager.getProperty(Constants.CURRENT_USER_API_KEY);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -119,9 +119,7 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
                 .build();
         try {
             Response response = client.newCall(request).execute();
-            if (response.code() == 200) {
-                result = response.body().string();
-            }
+            result = String.valueOf(response.code());
         } catch (IOException e) {
             e.printStackTrace();
         }
