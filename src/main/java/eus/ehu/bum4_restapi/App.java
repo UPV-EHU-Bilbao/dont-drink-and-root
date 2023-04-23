@@ -25,10 +25,13 @@
 
 package eus.ehu.bum4_restapi;
 
+import eus.ehu.bum4_restapi.controllers.AppController;
+import eus.ehu.bum4_restapi.controllers.LoginController;
 import eus.ehu.bum4_restapi.utils.Constants;
 import eus.ehu.bum4_restapi.utils.PropertyManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -38,14 +41,49 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class App extends Application {
+    Scene loginScene;
+    LoginController loginController;
+    Scene menuScene;
+    AppController appController;
+    Stage appStage;
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(PropertyManager.getProperty(Constants.APP_VIEW)));
-        Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
-        stage.setTitle("REST client for Mastodon");
-        stage.setScene(scene);
+        appStage = stage;
+
+        FXMLLoader loginLoader = new FXMLLoader(App.class.getResource("login-view.fxml"));
+        Scene loginScene = new Scene(loginLoader.load(), 600, 400);
+        LoginController loginController = loginLoader.getController();
+        this.loginController = loginController;
+        loginController.setMain(this);
+
+        FXMLLoader menuLoader = new FXMLLoader(App.class.getResource(PropertyManager.getProperty(Constants.APP_VIEW)));
+        Scene menuScene = new Scene(menuLoader.load(), 1200, 800);
+        AppController appController = menuLoader.getController();
+        this.appController = appController;
+        appController.setMain(this);
+
+        this.loginScene = loginScene;
+        this.menuScene = menuScene;
+
+        stage.setTitle("Login");
+        stage.setScene(loginScene);
         stage.show();
     }
+
+    public void show(String title) throws IOException{
+        switch (title){
+            case "Login":
+                appStage.setTitle("Login");
+                appStage.setScene(loginScene);
+                break;
+            case "Menu":
+                appController.onScene();
+                appStage.setTitle("Rest API Mastodon");
+                appStage.setScene(menuScene);
+                break;
+        }
+    }
+
 
     public static void main(String[] args) {
         launch();

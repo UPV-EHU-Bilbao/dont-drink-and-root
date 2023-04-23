@@ -8,6 +8,7 @@ module eus.ehu.bum4_restapi {
     requires com.google.gson;
     requires java.desktop;
     requires jdk.xml.dom;
+    requires java.sql;
 
     opens eus.ehu.bum4_restapi to javafx.fxml;
     opens eus.ehu.bum4_restapi.api to javafx.fxml;
