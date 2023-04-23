@@ -39,7 +39,6 @@ import java.util.List;
 public class FollowController {
 
     protected RestAPI<?, ?> restAPI;
-
     @FXML
     public void initialize(List<Account> list, VBox view)  {
 

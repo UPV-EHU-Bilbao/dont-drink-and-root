@@ -136,5 +136,5 @@ public class AppController {
         loadViewOnCenter(PropertyManager.getProperty(Constants.USER_FOLLOWING_VIEW));
         selectButton("following");
     }
-   
+
 }

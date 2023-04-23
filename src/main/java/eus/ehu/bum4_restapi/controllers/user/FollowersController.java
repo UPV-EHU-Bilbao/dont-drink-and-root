@@ -51,6 +51,8 @@ public class FollowersController extends FollowController {
     @FXML
     private ScrollPane scrollPane;
 
+
+
     @FXML
     public void initialize() throws IOException {
 
@@ -69,6 +71,8 @@ public class FollowersController extends FollowController {
                 loadingImage.setVisible(false);
             });
         }).start();
+
+
 
 
         //  Stop timer and print taken time
