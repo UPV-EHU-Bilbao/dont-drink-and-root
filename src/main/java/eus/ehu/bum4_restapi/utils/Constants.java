@@ -39,6 +39,8 @@ public enum Constants {
     ENDPOINT_FOLLOWING("/following"),
     ENDPOINT_STATUSES("/statuses"),
     ENDPOINT_FAVOURITES("/favourites"),
+    ENDPOINT_MARK_TOOT_AS_FAV("/favourite"),
+    ENDPOINT_MARK_TOOT_AS_NOT_FAV("/unfavourite"),
 
     /**
      * Views

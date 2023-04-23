@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.web.WebView?>
 
-<AnchorPane fx:id="mainAnchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="637.0" prefWidth="704.0" style="-fx-background-color: #f0ffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eus.ehu.bum4_restapi.controllers.user.TootsController">
+<AnchorPane fx:id="mainAnchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="637.0" prefWidth="704.0" style="-fx-background-color: #f0ffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TextField fx:id="author" editable="false" layoutX="155.0" layoutY="73.0" prefHeight="38.0" prefWidth="131.0" />
       <TextField fx:id="date" cacheShape="false" editable="false" layoutX="368.0" layoutY="73.0" prefHeight="38.0" prefWidth="131.0">
@@ -65,5 +65,6 @@
             </ImageView>
          </graphic>
       </Button>
+      <RadioButton fx:id="favButton" layoutX="474.0" layoutY="538.0" mnemonicParsing="false" onMouseClicked="#favClicked" text="Favourite" />
    </children>
 </AnchorPane>

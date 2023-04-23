@@ -88,7 +88,11 @@ public abstract class TootListTemplateController {
     @FXML
     private Label dateText;
 
+    @FXML
+    private RadioButton favButton;
+
     private void showAll(boolean show){
+        favButton.setVisible(show);
         boosted.setVisible(show);
         tootCount.setVisible(show);
         author.setVisible(show);
@@ -200,6 +204,7 @@ public abstract class TootListTemplateController {
         }
         author.setText(toot.getUsername());
         date.setText(toot.getCreatedAt());
+        favButton.setSelected(toot.isFavourited());
         class MyThread extends Thread{
             public void run(Toot toot){
                 Platform.runLater(() -> {
@@ -212,7 +217,19 @@ public abstract class TootListTemplateController {
         thread.run(toot);
         finalToot = toot;
 
-        PropertyManager.setProperty("currenttoot", String.valueOf(currentToot + 1));
+
+        /*
+         * Input stream needs to be loaded, in order to preserve other variables.
+         * TODO: Adapt de the new PropertyManager class to make it work here.
+         */
+        Properties prop = new Properties();
+        InputStream input = new FileInputStream("config.properties");
+        prop.load(input);
+
+        OutputStream output = new FileOutputStream("config.properties");
+
+        prop.setProperty("currenttoot", String.valueOf(currentToot + 1));
+        prop.store(output, null);
     }
 
     @FXML
@@ -227,6 +244,24 @@ public abstract class TootListTemplateController {
                     e.printStackTrace();
                 }
             }).start();
+        }
+    }
+
+    @FXML
+    void favClicked(MouseEvent event){
+        if (finalToot.isFavourited()){
+            new Thread(() -> {
+                restAPI.sendRequest("/statuses/" + finalToot.getId() + Constants.ENDPOINT_MARK_TOOT_AS_NOT_FAV);
+            }).start();
+            finalToot.setFavourited(false);
+            favButton.setSelected(false);
+        }
+        else {
+            new Thread(() -> {
+                restAPI.sendRequest("/statuses/" + finalToot.getId() + Constants.ENDPOINT_MARK_TOOT_AS_FAV);
+            }).start();
+            finalToot.setFavourited(true);
+            favButton.setSelected(true);
         }
     }
 }

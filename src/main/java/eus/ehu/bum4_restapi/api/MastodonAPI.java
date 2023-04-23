@@ -33,9 +33,7 @@ import eus.ehu.bum4_restapi.model.Toot;
 
 import eus.ehu.bum4_restapi.utils.Constants;
 import eus.ehu.bum4_restapi.utils.PropertyManager;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -64,6 +62,7 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
         Request request = new Request.Builder()
                 .url(Constants.API_BASE + endpoint)
                 .get()
+                //  IMPORTANTE!!: CAMBIAR LA API KEY, NO HARDCODEAR
                 .addHeader("Authorization", "Bearer " + "hggrWHO9WCMzg2O7ayEgpIQFNsEwvGMWF3Wmu-AD9wc")
                 .build();
 
@@ -71,6 +70,33 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
             Response response = client.newCall(request).execute();
             if (response.code() == 200) {
                 result = response.body().string();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public String sendRequest(String endpoint){
+        // ENDPOINT: "/statuses/" + tootId + "/(un)favourite"
+        String result = "";
+        OkHttpClient client = new OkHttpClient();
+
+        RequestBody body = new FormBody.Builder()
+                //.add("", "")
+                .build();
+
+        Request request = new Request.Builder()
+                .url(Constants.API_BASE + endpoint)
+                .post(body)
+                .addHeader("Authorization", "Bearer " + "hggrWHO9WCMzg2O7ayEgpIQFNsEwvGMWF3Wmu-AD9wc")  //  CAMBIAR! No puede estar hardcodeado
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.code() == 200) {
+                result = "200";
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -116,12 +142,6 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
     public void setFollowingList(List<Account> list){
         followingList = list;
     }
-
-    @Override
-    public String sendRequest(String endpoint){
-        return request(endpoint);
-    }
-
 
     //ENDPOINT for toots: Constants.ACCOUNTS + accountId + Constants.ENDPOINT_STATUSES
     //ENDPOINT for fav toots: String.valueOf(Constants.ENDPOINT_FAVOURITES
