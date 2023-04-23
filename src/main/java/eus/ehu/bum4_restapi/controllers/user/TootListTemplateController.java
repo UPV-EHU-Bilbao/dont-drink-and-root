@@ -212,19 +212,7 @@ public abstract class TootListTemplateController {
         thread.run(toot);
         finalToot = toot;
 
-
-        /*
-         * Input stream needs to be loaded, in order to preserve other variables.
-         * TODO: Adapt de the new PropertyManager class to make it work here.
-         */
-        Properties prop = new Properties();
-        InputStream input = new FileInputStream("config.properties");
-        prop.load(input);
-
-        OutputStream output = new FileOutputStream("config.properties");
-
-        prop.setProperty("currenttoot", String.valueOf(currentToot + 1));
-        prop.store(output, null);
+        PropertyManager.setProperty("currenttoot", String.valueOf(currentToot + 1));
     }
 
     @FXML

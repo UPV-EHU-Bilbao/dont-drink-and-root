@@ -25,9 +25,7 @@
 
 package eus.ehu.bum4_restapi.utils;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Properties;
 
 public class PropertyManager {
@@ -52,9 +50,17 @@ public class PropertyManager {
     }
 
     /**
-     * TODO: Para poder guardar propiedades (actualmente en el TootsController únicamente)
+     *
      * @param key
+     * @param value
      */
-    public static void setProperty(String key){
+    public static void setProperty(String key, String value) {
+        try(OutputStream outputStream = new FileOutputStream(RESOURCE_FILE)){
+            PROPERTIES.setProperty(key, value);
+            PROPERTIES.store(outputStream, null);
+        } catch(Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("[PROPERTY-MANAGER] There was an error loading the file:" + RESOURCE_FILE);
+        }
     }
 }
