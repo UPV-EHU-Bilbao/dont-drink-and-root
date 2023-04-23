@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -25,9 +25,36 @@
             <font>
                 <Font size="17.0" />
             </font></Label>
-        <TextField fx:id="username" editable="false" layoutX="384.0" layoutY="40.0" prefHeight="34.0" prefWidth="198.0" />
-        <TextField fx:id="displayName" editable="false" layoutX="384.0" layoutY="95.0" prefHeight="34.0" prefWidth="198.0" />
-        <TextField fx:id="followers" editable="false" layoutX="334.0" layoutY="140.0" prefHeight="26.0" prefWidth="54.0" />
-        <TextField fx:id="following" editable="false" layoutX="521.0" layoutY="140.0" prefHeight="26.0" prefWidth="53.0" />
+        <Label fx:id="username" layoutX="374.0" layoutY="42.0" prefHeight="34.0" prefWidth="198.0" style="-fx-background-color: white;">
+         <font>
+            <Font size="17.0" />
+         </font>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets left="5.0" />
+         </padding></Label>
+        <Label fx:id="displayName" layoutX="374.0" layoutY="95.0" prefHeight="34.0" prefWidth="198.0" style="-fx-background-color: white;">
+         <font>
+            <Font size="17.0" />
+         </font>
+         <padding>
+            <Insets left="5.0" />
+         </padding></Label>
+        <Label fx:id="followers" layoutX="334.0" layoutY="141.0" prefHeight="26.0" prefWidth="54.0" style="-fx-background-color: white;">
+         <font>
+            <Font size="17.0" />
+         </font>
+         <padding>
+            <Insets left="5.0" />
+         </padding></Label>
+        <Label fx:id="following" layoutX="521.0" layoutY="141.0" prefHeight="26.0" prefWidth="53.0" style="-fx-background-color: white;">
+         <font>
+            <Font size="17.0" />
+         </font>
+         <padding>
+            <Insets left="5.0" />
+         </padding></Label>
     </children>
 </AnchorPane>

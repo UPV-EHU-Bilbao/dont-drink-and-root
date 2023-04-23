@@ -13,7 +13,7 @@
             <VBox fx:id="followersView" prefHeight="218.0" prefWidth="701.0" />
          </content>
       </ScrollPane>
-      <ImageView fx:id="loadingImage" fitHeight="150.0" fitWidth="200.0" layoutX="200.0" layoutY="129.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="129.0">
+      <ImageView fx:id="loadingImage" fitHeight="150.0" fitWidth="200.0" layoutX="300.0" layoutY="600.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="250.0">
          <image>
             <Image url="@../../../loading.gif" />
          </image>

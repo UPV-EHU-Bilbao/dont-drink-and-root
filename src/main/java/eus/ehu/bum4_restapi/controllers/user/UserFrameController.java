@@ -5,6 +5,7 @@ import eus.ehu.bum4_restapi.utils.Constants;
 import eus.ehu.bum4_restapi.utils.PropertyManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -20,19 +21,19 @@ public class UserFrameController {
     private ImageView avatar;
 
     @FXML
-    private TextField displayName;
+    private Label displayName;
 
     @FXML
-    private TextField followers;
+    private Label followers;
 
     @FXML
-    private TextField following;
+    private Label following;
 
     @FXML
     private AnchorPane listItem;
 
     @FXML
-    private TextField username;
+    private Label username;
 
 
     public UserFrameController(Account item) {
