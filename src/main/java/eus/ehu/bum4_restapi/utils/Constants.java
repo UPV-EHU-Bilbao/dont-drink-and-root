@@ -61,6 +61,7 @@ public enum Constants {
     CURRENT_USER_ID("currentUserID"),
     CURRENT_USER_API_KEY("currentUserAPIKey"),
     CURRENT_USERNAME("currentUsername"),
+    TOOT_INFO_TIME("toot_info_time"),
 
     /**
      * Persistent data
