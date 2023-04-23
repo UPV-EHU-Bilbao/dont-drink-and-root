@@ -27,10 +27,12 @@ package eus.ehu.bum4_restapi.controllers;
 
 import eus.ehu.bum4_restapi.utils.Constants;
 import eus.ehu.bum4_restapi.utils.PropertyManager;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -65,8 +67,19 @@ public class AppController {
     private Label TitleLabel;
 
     @FXML
+    private TextArea TootText;
+    @FXML
+    private Button postButton;
+
+    @FXML
+    private Label PostedTootLabel;
+
+
+
+    @FXML
     public void initialize() throws IOException {
         handleLoadUserToots();
+        TitleLabel.setText("User Toots");
     }
 
     /**
@@ -135,6 +148,21 @@ public class AppController {
         System.out.println("Loading User Following...");
         loadViewOnCenter(PropertyManager.getProperty(Constants.USER_FOLLOWING_VIEW));
         selectButton("following");
+    }
+
+    @FXML
+    void publishToot(ActionEvent event) {
+        if (TootText.getText().length() > 0) {
+            PostedTootLabel.setVisible(true);
+            PostedTootLabel.setStyle("-fx-background-color:  #7fff00;");
+            PostedTootLabel.setText("Your toot has been successfully posted!");
+            TootText.setText("");
+        }
+        else{
+            PostedTootLabel.setVisible(true);
+            PostedTootLabel.setText("Type something to post a toot!");
+            PostedTootLabel.setStyle("-fx-background-color:  #ff4500;");
+        }
     }
 
 }

@@ -171,4 +171,6 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
     public int getObjectListSize() {
         return getTootListSize();
     }
+
+
 }

@@ -36,7 +36,7 @@
             <Insets left="35.0" />
          </padding></Button>
       <RadioButton fx:id="boosted" disable="true" layoutX="543.0" layoutY="83.0" mnemonicParsing="false" opacity="0.91" text="Boosted" />
-      <WebView fx:id="webArea" layoutX="56.0" layoutY="119.0" prefHeight="474.0" prefWidth="525.0" />
+      <WebView fx:id="webArea" layoutX="56.0" layoutY="119.0" prefHeight="300.0" prefWidth="518.0" />
       <Hyperlink fx:id="tootLink" layoutX="188.0" layoutY="530.0" onMouseClicked="#goToLink" prefHeight="31.0" prefWidth="261.0" text="See this toot on Mastodon!" underline="true">
          <font>
             <Font size="18.0" />

@@ -9,9 +9,9 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="635.0" prefWidth="773.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eus.ehu.bum4_restapi.controllers.user.FollowingController">
    <children>
-      <ScrollPane fx:id="scrollPane" layoutX="35.0" layoutY="-2.0" prefHeight="630.0" prefWidth="702.0">
+      <ScrollPane fx:id="scrollPane" layoutX="35.0" layoutY="-2.0" prefHeight="630.0" prefWidth="702.0" style="-fx-background-color: #f0ffff;">
          <content>
-            <VBox id="followingView" fx:id="followingView" prefHeight="334.0" prefWidth="702.0">
+            <VBox id="followingView" fx:id="followingView" prefHeight="334.0" prefWidth="694.0">
                <children>
                   <ImageView fx:id="loadingImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                      <image>
