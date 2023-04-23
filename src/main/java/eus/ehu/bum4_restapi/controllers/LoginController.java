@@ -46,6 +46,11 @@ public class LoginController {
         db = DbAccessManager.getInstance();
         restAPI = new MastodonAPI();
         db.deleteCurrentAccount();
+        apiKeyField.setText("");
+        usernameField.setText("");
+        infoLabel.setText("");
+        savedCB.setSelected(false);
+        db.deleteAccounts();
     }
 
     public void loginClicked() throws IOException{

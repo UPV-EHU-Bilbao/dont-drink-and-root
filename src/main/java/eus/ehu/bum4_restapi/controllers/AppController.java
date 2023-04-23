@@ -193,6 +193,11 @@ public class AppController {
         selectButton("favourite-toots");
     }
 
+    @FXML
+    void handleLogOut() throws IOException {
+        main.show("Login");
+    }
+
     public void setMain(App a){
         this.main = a;
     }

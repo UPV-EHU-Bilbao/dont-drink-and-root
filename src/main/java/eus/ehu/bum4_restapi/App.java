@@ -75,6 +75,7 @@ public class App extends Application {
             case "Login":
                 appStage.setTitle("Login");
                 appStage.setScene(loginScene);
+                loginController.initialize();
                 break;
             case "Menu":
                 appController.onScene();
