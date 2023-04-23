@@ -141,4 +141,15 @@ public class DbAccessManager {
         this.close();
         return account;
     }
+
+    public void deleteAccounts(){
+        this.open();
+        String sql = "DELETE FROM accounts";
+        try (PreparedStatement pstmt  = conn.prepareStatement(sql)) {
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        this.close();
+    }
 }

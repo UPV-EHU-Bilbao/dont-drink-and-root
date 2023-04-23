@@ -141,6 +141,11 @@ public class AppController {
         selectButton("following");
     }
 
+    @FXML
+    void handleLogOut() throws IOException {
+        main.show("Login");
+    }
+
     public void setMain(App a){
         this.main = a;
     }
