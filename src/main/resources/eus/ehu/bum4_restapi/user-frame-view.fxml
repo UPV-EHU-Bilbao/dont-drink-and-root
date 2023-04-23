@@ -56,9 +56,5 @@
          <padding>
             <Insets left="5.0" />
          </padding></Label>
-        <TextField fx:id="username" editable="false" layoutX="334.0" layoutY="40.0" prefHeight="34.0" prefWidth="218.0" />
-        <TextField fx:id="displayName" editable="false" layoutX="334.0" layoutY="95.0" prefHeight="34.0" prefWidth="218.0" />
-        <TextField fx:id="followers" editable="false" layoutX="306.0" layoutY="140.0" prefHeight="26.0" prefWidth="54.0" />
-        <TextField fx:id="following" editable="false" layoutX="498.0" layoutY="140.0" prefHeight="26.0" prefWidth="53.0" />
     </children>
 </AnchorPane>
