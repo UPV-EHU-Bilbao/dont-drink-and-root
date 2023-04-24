@@ -29,13 +29,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import eus.ehu.bum4_restapi.database.DbAccessManager;
 import eus.ehu.bum4_restapi.model.Account;
-import eus.ehu.bum4_restapi.model.SimpleAccount;
 import eus.ehu.bum4_restapi.model.Toot;
 
 import eus.ehu.bum4_restapi.utils.Constants;
-import eus.ehu.bum4_restapi.utils.PropertyManager;
 import eus.ehu.bum4_restapi.utils.Shared;
 import okhttp3.*;
 
@@ -48,10 +45,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class MastodonAPI implements RestAPI<Toot, Account> {
     List<Toot> tootList;
-    //SimpleAccount currentAccount;
     List<Account> followersList;
     List<Account> followingList;
-    //DbAccessManager db;
     private boolean tootListFilled;
 
     public MastodonAPI() {
