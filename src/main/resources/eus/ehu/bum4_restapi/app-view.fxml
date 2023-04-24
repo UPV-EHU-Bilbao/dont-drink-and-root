@@ -88,6 +88,18 @@
                   </ImageView>
                </graphic>
             </Button>
+            <Button fx:id="homeButton" alignment="CENTER" mnemonicParsing="false" onAction="#handleLoadHome" prefHeight="54.0" prefWidth="167.0" style="-fx-background-color: #f0ffff;" styleClass="btn btn-outline-dark" text="Home" textAlignment="RIGHT">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../mailIcon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
       </VBox>
    </left>

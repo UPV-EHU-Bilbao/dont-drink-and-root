@@ -30,6 +30,7 @@ import eus.ehu.bum4_restapi.api.MastodonAPI;
 import eus.ehu.bum4_restapi.api.RestAPI;
 import eus.ehu.bum4_restapi.controllers.user.FavTootsController;
 import eus.ehu.bum4_restapi.controllers.user.TootsController;
+import eus.ehu.bum4_restapi.controllers.user.TootsHomeController;
 import eus.ehu.bum4_restapi.utils.Constants;
 import eus.ehu.bum4_restapi.utils.PropertyManager;
 import eus.ehu.bum4_restapi.utils.Shared;
@@ -92,6 +93,9 @@ public class AppController {
     @FXML
     private Button favouritesButton;
 
+    @FXML
+    private Button homeButton;
+
     private RestAPI<?, ?> restAPI;
     
     @FXML
@@ -145,15 +149,17 @@ public class AppController {
                 userFollowers.setStyle(not_selected);
                 userFollowing.setStyle(not_selected);
                 favouritesButton.setStyle(not_selected);
+                homeButton.setStyle(not_selected);
                 titleLabel.setText("User toots");
-              Image image = new Image(getClass().getResourceAsStream("/mailIcon.png"));
-              titleImg.setImage(image);
+                Image image = new Image(getClass().getResourceAsStream("/mailIcon.png"));
+                titleImg.setImage(image);
             }
             case "followers" -> {
                 userToots.setStyle(not_selected);
                 userFollowers.setStyle(selected);
                 userFollowing.setStyle(not_selected);
                 favouritesButton.setStyle(not_selected);
+                homeButton.setStyle(not_selected);
                 titleLabel.setText("Followers");
                 Image image = new Image(getClass().getResourceAsStream("/followersIcon.png"));
                 titleImg.setImage(image);
@@ -164,6 +170,7 @@ public class AppController {
                 userFollowers.setStyle(not_selected);
                 userFollowing.setStyle(selected);
                 favouritesButton.setStyle(not_selected);
+                homeButton.setStyle(not_selected);
                 titleLabel.setText("Following");
                 Image image = new Image(getClass().getResourceAsStream("/following.png"));
                 titleImg.setImage(image);
@@ -173,9 +180,20 @@ public class AppController {
                 userFollowers.setStyle(not_selected);
                 userFollowing.setStyle(not_selected);
                 favouritesButton.setStyle(selected);
+                homeButton.setStyle(not_selected);
                 titleLabel.setText("Favourite Toots");
                 Image image = new Image(getClass().getResourceAsStream("/following.png"));  //  Change picture
                 titleImg.setImage(image);
+            }
+            case "home" -> {
+                userToots.setStyle(not_selected);
+                userFollowers.setStyle(not_selected);
+                userFollowing.setStyle(not_selected);
+                favouritesButton.setStyle(not_selected);
+                homeButton.setStyle(selected);
+                titleLabel.setText("Home");
+                //Image image = new Image(getClass().getResourceAsStream("/following.png"));  //  Change picture
+                //titleImg.setImage(image);
             }
         }
     }
@@ -264,4 +282,12 @@ public class AppController {
             }
         }).start();
     }
+
+    @FXML
+    void handleLoadHome() throws IOException {
+        System.out.println("Loading Home...");
+        loadViewOnCenter(PropertyManager.getProperty(Constants.USER_TOOTS_VIEW), TootsHomeController.class);
+        selectButton("home");
+    }
+
 }
