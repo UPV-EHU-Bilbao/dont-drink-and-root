@@ -113,8 +113,10 @@ public class LoginController {
             main.show("Menu");
             return true;
         }
-        else
+        else{
             infoLabel.setText("Incorrect credentials");
+            Shared.clear();
+        }
 
         return false;
     }

@@ -40,7 +40,7 @@ public class DbAccessManager {
             String url = "jdbc:sqlite:" + dbpath;
             conn = DriverManager.getConnection(url);
         } catch (Exception e) {
-            System.err.println("Cannot connect to database server " + e);
+            System.err.println("Cannot connect to database server " + e.getMessage());
         }
     }
 
