@@ -49,6 +49,7 @@ import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class TootListTemplateController {
@@ -231,14 +232,14 @@ public abstract class TootListTemplateController {
     void favClicked(MouseEvent event){
         if (finalToot.isFavourited()){
             new Thread(() -> {
-                restAPI.getRequest(Constants.ENDPOINT_STATUSES + "/" + finalToot.getId() + Constants.ENDPOINT_MARK_TOOT_AS_NOT_FAV);
+                restAPI.postRequest(Constants.ENDPOINT_STATUSES + "/" + finalToot.getId() + Constants.ENDPOINT_MARK_TOOT_AS_NOT_FAV, new HashMap<String, String>());
             }).start();
             finalToot.setFavourited(false);
             favButton.setSelected(false);
         }
         else {
             new Thread(() -> {
-                restAPI.getRequest(Constants.ENDPOINT_STATUSES + "/" + finalToot.getId() + Constants.ENDPOINT_MARK_TOOT_AS_FAV);
+                restAPI.postRequest(Constants.ENDPOINT_STATUSES + "/" + finalToot.getId() + Constants.ENDPOINT_MARK_TOOT_AS_FAV, new HashMap<String, String>());
             }).start();
             finalToot.setFavourited(true);
             favButton.setSelected(true);
