@@ -32,6 +32,7 @@ import eus.ehu.bum4_restapi.controllers.user.FavTootsController;
 import eus.ehu.bum4_restapi.controllers.user.TootsController;
 import eus.ehu.bum4_restapi.utils.Constants;
 import eus.ehu.bum4_restapi.utils.PropertyManager;
+import eus.ehu.bum4_restapi.utils.Shared;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -215,6 +216,7 @@ public class AppController {
 
     @FXML
     void handleLogOut() throws IOException {
+        Shared.clear();
         main.show("Login");
     }
 

@@ -23,25 +23,16 @@
  *
  */
 
-package eus.ehu.bum4_restapi.api;
+package eus.ehu.bum4_restapi.utils;
 
-import com.google.gson.JsonArray;
-import eus.ehu.bum4_restapi.utils.Constants;
+public class Shared {
+    public static String username;
+    public static String apiKey;
+    public static String accID;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-
-public interface RestAPI<T, V> {
-    public String postRequest(String endpoint, Map<String, String> params);
-    public String getRequest(String endpoint);
-    public void setJSONtoList(String endpoint);
-    public JsonArray getPreviousJSONObject();
-    public JsonArray getNextJSONObject();
-    public T getObjectFromList(int index);
-    public CompletableFuture<T> getObjectFromListAsync(int index);
-    public List<V> getObjectList(String endpoint);
-    public int getObjectListSize();
-    public boolean validateCredentials(String username, String apiKey);
+    public static void clear(){
+        username = "";
+        apiKey = "";
+        accID = "";
+    }
 }

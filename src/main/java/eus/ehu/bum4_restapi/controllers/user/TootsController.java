@@ -56,8 +56,6 @@ public class TootsController extends TootListTemplateController{
 
     @Override
     void getData() throws IOException {
-        //  IMPORTANT!: CHANGE LATER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        String currentAccountId = PropertyManager.getProperty(Constants.USER_GERU);
-        restAPI.setJSONtoList(Constants.ACCOUNTS + currentAccountId + Constants.ENDPOINT_STATUSES);
+        restAPI.setJSONtoList(Constants.ACCOUNTS + Constants.PLACEHOLDER_ACCOUNT.getKey() + Constants.ENDPOINT_STATUSES);
     }
 }

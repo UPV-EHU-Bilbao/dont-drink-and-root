@@ -36,6 +36,7 @@ import eus.ehu.bum4_restapi.model.Toot;
 
 import eus.ehu.bum4_restapi.utils.Constants;
 import eus.ehu.bum4_restapi.utils.PropertyManager;
+import eus.ehu.bum4_restapi.utils.Shared;
 import okhttp3.*;
 
 import java.io.IOException;
@@ -56,31 +57,16 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
     public MastodonAPI() {
         tootListFilled = false;
         resetTootList();
-        //db = DbAccessManager.getInstance();
-        //updateCurrentAccount();
     }
-
-    /*
-    public void updateCurrentAccount(){
-        this.currentAccount = db.getCurrentAccount();
-    }
-     */
 
     public String getRequest(String endpoint) {
         String result = "";
         OkHttpClient client = new OkHttpClient();
-        String token = "";
-        try {
-            token = PropertyManager.getProperty(Constants.CURRENT_USER_API_KEY);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            System.out.println("Something went wrong. It's likely that the currentUserAPIKey isn't set");
-        }
+
         Request request = new Request.Builder()
                 .url(Constants.API_BASE + endpoint)
                 .get()
-                .addHeader("Authorization", "Bearer " + token)
+                .addHeader("Authorization", "Bearer " + Shared.apiKey)
                 .build();
 
         try {
@@ -95,14 +81,7 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
     }
 
     public String postRequest(String endpoint, Map<String, String> params) {
-        String token = "";
-        try {
-            token = PropertyManager.getProperty(Constants.CURRENT_USER_API_KEY);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            System.out.println("Something went wrong. It's likely that the currentUserAPIKey isn't set");
-        }
+
         String result = "";
         OkHttpClient client = new OkHttpClient();
 
@@ -115,7 +94,7 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
         Request request = new Request.Builder()
                 .url(Constants.API_BASE + endpoint)
                 .post(body)
-                .addHeader("Authorization", "Bearer " + token)
+                .addHeader("Authorization", "Bearer " + Shared.apiKey)
                 .build();
         try {
             Response response = client.newCall(request).execute();
@@ -166,13 +145,10 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
         followingList = list;
     }
 
-
-
-
     //ENDPOINT: Constants.ACCOUNTS + accountId + Constants.ENDPOINT_STATUSES
     @Override
     public void setJSONtoList(String endpoint){
-        CompletableFuture<List<Toot>> future = getToots(endpoint);
+        CompletableFuture<List<Toot>> future = getToots(endpoint.replace(Constants.PLACEHOLDER_ACCOUNT.getKey(), Shared.accID));
         future.thenAcceptAsync(this::setTootList);
     }
 
@@ -207,7 +183,7 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
     @Override
     public List<Account> getObjectList(String endpoint){
         try {
-            return getFollowers(Constants.ACCOUNTS + PropertyManager.getProperty(Constants.CURRENT_USER_ID) + endpoint);
+            return getFollowers(Constants.ACCOUNTS + Shared.accID + endpoint);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -218,5 +194,20 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
         return getTootListSize();
     }
 
+    @Override
+    public boolean validateCredentials(String username, String apiKey) {
+        try{
+            Shared.apiKey = apiKey;
+            Gson gson = new Gson();
+            String rq = getRequest(Constants.ACCOUNTS + Constants.ENDPOINT_VERIFY_CREDENTIALS.getKey());
+            JsonObject jsonData = gson.fromJson(rq, JsonObject.class);
+            String user = jsonData.get("username").getAsString();
+            Shared.accID = jsonData.get("id").getAsString();
+            return username.equals(user);
+        } catch(Exception e){
+            System.out.println("[EXCEPTION][API-CREDENTIALS] Something went wrong with the validation.");
+        }
+        return false;
+    }
 
 }

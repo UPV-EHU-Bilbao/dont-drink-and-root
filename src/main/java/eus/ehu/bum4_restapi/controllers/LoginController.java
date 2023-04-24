@@ -10,6 +10,7 @@ import eus.ehu.bum4_restapi.database.DbAccessManager;
 import eus.ehu.bum4_restapi.model.Account;
 import eus.ehu.bum4_restapi.utils.Constants;
 import eus.ehu.bum4_restapi.utils.PropertyManager;
+import eus.ehu.bum4_restapi.utils.Shared;
 import eus.ehu.bum4_restapi.utils.VboxUtils;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -43,44 +44,63 @@ public class LoginController {
     @FXML
     private Label infoLabel;
 
-    private DbAccessManager db;
+    @FXML
+    public Label apiLabel;
+
+    private static DbAccessManager db;
     RestAPI<?, ?> restAPI;
 
     @FXML
     public void initialize() throws IOException {
         db = DbAccessManager.getInstance();
         restAPI = new MastodonAPI();
-        db.deleteCurrentAccount();
+        apiKeyField.setVisible(false);
+        apiLabel.setVisible(false);
         apiKeyField.setText("");
-        usernameField.setText("");
+        usernameField.setText(PropertyManager.getProperty(Constants.CURRENT_USERNAME));
         infoLabel.setText("");
-        savedCB.setSelected(false);
-        db.deleteAccounts();
+        savedCB.setVisible(false);
     }
 
-    public void loginClicked() throws IOException{
+    public void loginClicked() throws IOException {
         String username = usernameField.getText().toString();
         String apiKey = apiKeyField.getText().toString();
-        boolean save = savedCB.isSelected();
-
+        String apiKeyDB = db.getApiKeyFromUsername(username);
         restAPI = new MastodonAPI();
-        Gson gson = new Gson();
 
-        PropertyManager.setProperty(String.valueOf(Constants.CURRENT_USER_API_KEY), apiKey);
-        String rq = restAPI.getRequest(Constants.ACCOUNTS + "verify_credentials");
-        JsonObject account = gson.fromJson(rq, JsonObject.class);
+        if(username.equals("")){
+            infoLabel.setText("Please, introduce a username");
+        }
+        else if(apiKeyDB != null){
+            if(!validateInfo(username, apiKeyDB, db)){
+                apiKeyField.setVisible(true);
+                apiLabel.setVisible(true);
+            }
+        } else {
+            if(apiKeyField.isVisible()){
+                validateInfo(username, apiKey, db);
+            } else {
+                infoLabel.setText("API Key not existant for that account, please introduce one.");
+                apiKeyField.setVisible(true);
+                apiLabel.setVisible(true);
+            }
+        }
+    }
 
-        String u = account.get("username").getAsString();
-        String accountId = account.get("id").getAsString();
-
-        if (u.equals(username)){
-            PropertyManager.setProperty(String.valueOf(Constants.CURRENT_USERNAME), username);
-            PropertyManager.setProperty(String.valueOf(Constants.CURRENT_USER_ID), accountId);
+    private boolean validateInfo(String username, String apiKey, DbAccessManager db) throws IOException {
+        if(apiKey.equals("")){
+            infoLabel.setText("Please introduce your Mastodon's API key");
+        }
+        if (restAPI.validateCredentials(username, apiKey)){
+            db.addUser(username, apiKey, Shared.accID);
+            PropertyManager.setProperty(Constants.CURRENT_USERNAME.getKey(), username);
             main.show("Menu");
+            return true;
         }
-        else {
-            infoLabel.setText("User or api key incorrect. Please check credentials.");
-        }
+        else
+            infoLabel.setText("Incorrect credentials");
+
+        return false;
     }
 
     public void setMain(App a){

@@ -41,6 +41,7 @@ public enum Constants {
     ENDPOINT_FAVOURITES("/favourites"),
     ENDPOINT_MARK_TOOT_AS_FAV("/favourite"),
     ENDPOINT_MARK_TOOT_AS_NOT_FAV("/unfavourite"),
+    ENDPOINT_VERIFY_CREDENTIALS("verify_credentials"),
 
     /**
      * Views
@@ -58,15 +59,19 @@ public enum Constants {
      */
     USER_GERU("userid.geru"),
     USER_JUANAN("userid.juanan"),
-    CURRENT_USER_ID("currentUserID"),
-    CURRENT_USER_API_KEY("currentUserAPIKey"),
-    CURRENT_USERNAME("currentUsername"),
+    CURRENT_USERNAME("current.user"),
     TOOT_INFO_TIME("toot_info_time"),
 
     /**
      * Persistent data
      */
-    CURRENT_TOOT("currenttoot");
+    CURRENT_TOOT("currenttoot"),
+
+    /**
+     * Placeholders
+     */
+    PLACEHOLDER_ACCOUNT("${accountID}")
+    ;
 
     private final String key;
 

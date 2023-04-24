@@ -53,6 +53,7 @@ public class DbAccessManager {
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
+
             return rs.getString("api_key");
 
         } catch (SQLException e) {
