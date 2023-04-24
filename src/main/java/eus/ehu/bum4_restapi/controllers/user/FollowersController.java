@@ -51,8 +51,6 @@ public class FollowersController extends FollowController {
     @FXML
     private ScrollPane scrollPane;
 
-
-
     @FXML
     public void initialize() throws IOException {
 
@@ -64,6 +62,7 @@ public class FollowersController extends FollowController {
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         restAPI = new MastodonAPI();
+
         new Thread(() -> {
             List<Account> list = (List<Account>) restAPI.getObjectList(Constants.ENDPOINT_FOLLOWERS.getKey());
             Platform.runLater(() -> {
@@ -73,10 +72,6 @@ public class FollowersController extends FollowController {
             });
         }).start();
 
-
-
-
-        //  Stop timer and print taken time
         Instant end = Instant.now();
         System.out.println("Time taken to load followers: " + java.time.Duration.between(start, end).toMillis() + "ms");
     }

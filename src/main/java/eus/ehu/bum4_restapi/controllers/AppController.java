@@ -33,11 +33,11 @@ import eus.ehu.bum4_restapi.controllers.user.TootsController;
 import eus.ehu.bum4_restapi.utils.Constants;
 import eus.ehu.bum4_restapi.utils.PropertyManager;
 import eus.ehu.bum4_restapi.utils.Shared;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -50,7 +50,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import java.util.Locale;
+
 import java.util.Map;
 
 public class AppController {
@@ -75,10 +75,10 @@ public class AppController {
     private Button userFollowing;
 
     @FXML
-    private ImageView TitleImg;
+    private ImageView titleImg;
 
     @FXML
-    private Label TitleLabel;
+    private Label titleLabel;
     private App main;
 
     @FXML
@@ -92,14 +92,14 @@ public class AppController {
     @FXML
     private Button favouritesButton;
 
-    RestAPI<?, ?> restAPI;
+    private RestAPI<?, ?> restAPI;
     
     @FXML
     public void initialize(){}
 
     public void onScene() throws IOException{
         handleLoadUserToots();
-        TitleLabel.setText("User Toots");
+        titleLabel.setText("User Toots");
     }
 
     /**
@@ -129,13 +129,7 @@ public class AppController {
             mainBorderPane.setCenter(userTootAnchor);
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
@@ -151,18 +145,18 @@ public class AppController {
                 userFollowers.setStyle(not_selected);
                 userFollowing.setStyle(not_selected);
                 favouritesButton.setStyle(not_selected);
-                TitleLabel.setText("User toots");
+                titleLabel.setText("User toots");
               Image image = new Image(getClass().getResourceAsStream("/mailIcon.png"));
-              TitleImg.setImage(image);
+              titleImg.setImage(image);
             }
             case "followers" -> {
                 userToots.setStyle(not_selected);
                 userFollowers.setStyle(selected);
                 userFollowing.setStyle(not_selected);
                 favouritesButton.setStyle(not_selected);
-                TitleLabel.setText("Followers");
+                titleLabel.setText("Followers");
                 Image image = new Image(getClass().getResourceAsStream("/followersIcon.png"));
-                TitleImg.setImage(image);
+                titleImg.setImage(image);
 
             }
             case "following" -> {
@@ -170,18 +164,18 @@ public class AppController {
                 userFollowers.setStyle(not_selected);
                 userFollowing.setStyle(selected);
                 favouritesButton.setStyle(not_selected);
-                TitleLabel.setText("Following");
+                titleLabel.setText("Following");
                 Image image = new Image(getClass().getResourceAsStream("/following.png"));
-                TitleImg.setImage(image);
+                titleImg.setImage(image);
             }
             case "favourite-toots" -> {
                 userToots.setStyle(not_selected);
                 userFollowers.setStyle(not_selected);
                 userFollowing.setStyle(not_selected);
                 favouritesButton.setStyle(selected);
-                TitleLabel.setText("Favourite Toots");
+                titleLabel.setText("Favourite Toots");
                 Image image = new Image(getClass().getResourceAsStream("/following.png"));  //  Change picture
-                TitleImg.setImage(image);
+                titleImg.setImage(image);
             }
         }
     }
@@ -220,8 +214,8 @@ public class AppController {
         main.show("Login");
     }
 
-    public void setMain(App a){
-        this.main = a;
+    public void setMain(App app){
+        this.main = app;
     }
    
     @FXML
@@ -241,30 +235,14 @@ public class AppController {
                         PostedTootLabel.setVisible(true);
                         PostedTootLabel.setStyle("-fx-background-color:  #7fff00;");
                         PostedTootLabel.setText("The toot has been successfully posted! :)");
-                        new Thread(() -> {
-                            try {
-                                Thread.sleep(Long.parseLong(PropertyManager.getProperty(Constants.TOOT_INFO_TIME)));
-                                PostedTootLabel.setVisible(false);
-                            } catch (InterruptedException | IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }).start();
+                        ShowFeedback();
                     });
                 } else {
                     Platform.runLater(() -> {
                         PostedTootLabel.setVisible(true);
                         PostedTootLabel.setStyle("-fx-background-color: #FFFFE0");
                         PostedTootLabel.setText("Something went wrong :(");
-                        new Thread(() -> {
-                            try {
-                                Thread.sleep(Long.parseLong(PropertyManager.getProperty(Constants.TOOT_INFO_TIME)));
-                                PostedTootLabel.setVisible(false);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }).start();
+                        ShowFeedback();
                     });
                 }
             }).start();
@@ -272,16 +250,18 @@ public class AppController {
             PostedTootLabel.setVisible(true);
             PostedTootLabel.setText("Type something to post a toot!");
             PostedTootLabel.setStyle("-fx-background-color:  #ff4500;");
-            new Thread(() -> {
-                try {
-                    Thread.sleep(Long.parseLong(PropertyManager.getProperty(Constants.TOOT_INFO_TIME)));
-                    PostedTootLabel.setVisible(false);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }).start();
+            ShowFeedback();
         }
+    }
+
+    private void ShowFeedback() {
+        new Thread(() -> {
+            try {
+                Thread.sleep(Long.parseLong(PropertyManager.getProperty(Constants.TOOT_INFO_TIME)));
+                PostedTootLabel.setVisible(false);
+            } catch (InterruptedException | IOException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
     }
 }

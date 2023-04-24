@@ -99,7 +99,7 @@
                   <Insets right="790.0" />
                </StackPane.margin>
             </Line>
-            <Label fx:id="TitleLabel" alignment="TOP_CENTER" prefHeight="66.0" prefWidth="293.0" style="-fx-background-color: #87ceeb;" textAlignment="CENTER" underline="true">
+            <Label fx:id="titleLabel" alignment="TOP_CENTER" prefHeight="66.0" prefWidth="293.0" style="-fx-background-color: #87ceeb;" textAlignment="CENTER" underline="true">
                <font>
                   <Font name="Gadugi" size="45.0" />
                </font>
@@ -115,7 +115,7 @@
                   <Insets right="1000.0" />
                </StackPane.margin>
             </ImageView>
-            <ImageView fx:id="TitleImg" fitHeight="69.0" fitWidth="73.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="titleImg" fitHeight="69.0" fitWidth="73.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../mailIcon.png" />
                </image>

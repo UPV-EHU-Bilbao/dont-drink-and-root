@@ -1,44 +1,63 @@
+/*
+ * This file is part of the MASTODONFX-RESTAPI project.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ *
+ * @authors - Geru-Scotland (Basajaun) | Github: https://github.com/geru-scotland
+ *          - Unai Salaberria          | Github: https://github.com/unaisala
+ *          - Martin Jimenez           | Github: https://github.com/Matx1n3
+ *          - Iñaki Azpiroz            | Github: https://github.com/iazpiroz15
+ *          - Diego Forniés            | Github: https://github.com/DiegoFornies
+ *
+ */
+
 package eus.ehu.bum4_restapi.database;
 
 import eus.ehu.bum4_restapi.model.SimpleAccount;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
-
 
 public class DbAccessManager {
 
-    Connection conn = null;
-    String dbpath;
+    private Connection conn = null;
+    private String dbpath;
 
     public void open() {
         try {
             String url = "jdbc:sqlite:" + dbpath;
             conn = DriverManager.getConnection(url);
-
-            System.out.println("Database connection established");
         } catch (Exception e) {
             System.err.println("Cannot connect to database server " + e);
         }
     }
 
     public void close() {
-        if (conn != null)
+        if (conn != null){
             try {
                 conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        System.out.println("Database connection closed");
+        }
     }
 
     private static DbAccessManager instance = new DbAccessManager();
 
     private DbAccessManager() {
-
         dbpath = "accounts.db";
-
     }
 
     public static DbAccessManager getInstance() {
@@ -53,13 +72,10 @@ public class DbAccessManager {
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
-
             return rs.getString("api_key");
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         this.close();
         return null;
     }
@@ -68,15 +84,15 @@ public class DbAccessManager {
         this.open();
         String sql = "INSERT INTO accounts (username, api_key, id) VALUES(?,?,?)";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)){
             pstmt.setString(1, username);
             pstmt.setString(2, apiKey);
             pstmt.setString(3, id);
             pstmt.executeUpdate();
-        } catch (SQLException e) {
+        } catch (SQLException ignored) {
         }
-        this.close();
 
+        this.close();
     }
 
     public ArrayList<SimpleAccount> getAccounts (){
@@ -101,11 +117,13 @@ public class DbAccessManager {
     public void deleteCurrentAccount(){
         this.open();
         String sql = "DELETE FROM current_account";
+
         try (PreparedStatement pstmt  = conn.prepareStatement(sql)) {
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
+
         this.close();
     }
 
@@ -121,12 +139,14 @@ public class DbAccessManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         this.close();
     }
 
     public SimpleAccount getCurrentAccount(){
         this.open();
         SimpleAccount account = null;
+
         try {
             String query = "SELECT * FROM current_account";
             ResultSet rs = conn.createStatement().executeQuery(query);

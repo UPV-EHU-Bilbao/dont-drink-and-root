@@ -29,9 +29,9 @@ import eus.ehu.bum4_restapi.api.MastodonAPI;
 
 import eus.ehu.bum4_restapi.model.Account;
 import eus.ehu.bum4_restapi.utils.Constants;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -63,6 +63,10 @@ public class FollowingController extends FollowController {
         loadingImage.setVisible(true);
 
         restAPI = new MastodonAPI();
+
+        /*
+        TODO: Change all this kind of thread use for CompletableFuture
+         */
         new Thread(() -> {
             List<Account> list = (List<Account>)restAPI.getObjectList(Constants.ENDPOINT_FOLLOWING.getKey());
             Platform.runLater(() -> {

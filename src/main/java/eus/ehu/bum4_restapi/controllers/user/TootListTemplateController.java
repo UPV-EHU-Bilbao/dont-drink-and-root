@@ -31,6 +31,7 @@ import eus.ehu.bum4_restapi.model.Toot;
 import eus.ehu.bum4_restapi.utils.Constants;
 import eus.ehu.bum4_restapi.utils.HyperLinkRedirectListener;
 import eus.ehu.bum4_restapi.utils.PropertyManager;
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -48,7 +49,6 @@ import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
-import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class TootListTemplateController {
@@ -91,28 +91,14 @@ public abstract class TootListTemplateController {
     @FXML
     private RadioButton favButton;
 
-    private void showAll(boolean show){
-        favButton.setVisible(show);
-        boosted.setVisible(show);
-        tootCount.setVisible(show);
-        author.setVisible(show);
-        date.setVisible(show);
-        next.setVisible(show);
-        previous.setVisible(show);
-        webArea.setVisible(show);
-        tootLink.setVisible(show);
-        authText.setVisible(show);
-        dateText.setVisible(show);
-    }
-
     /**
      * Specific MainController class members.
      */
-    RestAPI<?, ?> restAPI;
-    int currentToot;
-    int totalToots;
+    protected RestAPI<?, ?> restAPI;
+    private int currentToot;
+    private int totalToots;
 
-    Toot finalToot;
+    private Toot finalToot;
 
     @FXML
     private ImageView loadingImage;
@@ -202,9 +188,14 @@ public abstract class TootListTemplateController {
             toot = toot.getReblog();
             boosted.setSelected(true);
         }
+
         author.setText(toot.getUsername());
         date.setText(toot.getCreatedAt());
         favButton.setSelected(toot.isFavourited());
+
+        /*
+        TODO: Change all this kind of thread use for CompletableFuture
+         */
         class MyThread extends Thread{
             public void run(Toot toot){
                 Platform.runLater(() -> {
@@ -213,11 +204,12 @@ public abstract class TootListTemplateController {
                 });
             }
         }
+
         MyThread thread = new MyThread();
         thread.run(toot);
         finalToot = toot;
 
-        PropertyManager.setProperty("currenttoot", String.valueOf(currentToot + 1));
+        PropertyManager.setProperty(Constants.CURRENT_TOOT.getKey(), String.valueOf(currentToot + 1));
     }
 
     @FXML
@@ -251,5 +243,19 @@ public abstract class TootListTemplateController {
             finalToot.setFavourited(true);
             favButton.setSelected(true);
         }
+    }
+
+    private void showAll(boolean show){
+        favButton.setVisible(show);
+        boosted.setVisible(show);
+        tootCount.setVisible(show);
+        author.setVisible(show);
+        date.setVisible(show);
+        next.setVisible(show);
+        previous.setVisible(show);
+        webArea.setVisible(show);
+        tootLink.setVisible(show);
+        authText.setVisible(show);
+        dateText.setVisible(show);
     }
 }
