@@ -16,6 +16,21 @@
    <left>
       <VBox prefHeight="649.0" prefWidth="205.0" style="-fx-background-color: #ffffff; -fx-border-color: black;" BorderPane.alignment="CENTER">
          <children>
+            <Button fx:id="homeButton" alignment="CENTER" mnemonicParsing="false" onAction="#handleHome" prefHeight="54.0" prefWidth="167.0" style="-fx-background-color: #f0ffff;" styleClass="btn btn-outline-dark" text="   Home" textAlignment="RIGHT">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../homeIcon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <VBox.margin>
+                  <Insets left="10.0" right="15.0" top="20.0" />
+               </VBox.margin>
+            </Button>
             <Button fx:id="userToots" alignment="CENTER" mnemonicParsing="false" onAction="#handleLoadUserToots" prefHeight="54.0" prefWidth="167.0" style="-fx-background-color: #f0ffff;" styleClass="btn btn-outline-dark" text="   User Toots" textAlignment="RIGHT">
                <font>
                   <Font size="14.0" />
@@ -28,7 +43,7 @@
                   </ImageView>
                </graphic>
                <VBox.margin>
-                  <Insets bottom="15.0" left="10.0" right="5.0" top="40.0" />
+                  <Insets bottom="15.0" left="10.0" right="5.0" top="30.0" />
                </VBox.margin>
             </Button>
             <Button fx:id="userFollowers" alignment="CENTER" mnemonicParsing="false" onAction="#handleLoadUserFollowers" prefHeight="47.0" prefWidth="166.0" style="-fx-background-color: #f0ffff;" styleClass="btn-light" text="    Followers" textAlignment="RIGHT">
@@ -61,6 +76,24 @@
                   <Insets bottom="15.0" left="10.0" right="15.0" top="15.0" />
                </VBox.margin>
             </Button>
+            <Button fx:id="favouritesButton" alignment="CENTER" mnemonicParsing="false" onAction="#handleFavourites" prefHeight="41.0" prefWidth="165.0" style="-fx-background-color: #f0ffff;" styleClass="btn-info" text="     Favourites">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../following.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets bottom="15.0" left="10.0" right="15.0" top="15.0" />
+               </VBox.margin>
+            </Button>
             <Button fx:id="userFollowing1" alignment="CENTER" mnemonicParsing="false" onAction="#handleLogOut" prefHeight="41.0" prefWidth="165.0" style="-fx-background-color: #f0ffff;" styleClass="btn-info" text="    Log out">
                <font>
                   <Font size="14.0" />
@@ -75,18 +108,6 @@
                <VBox.margin>
                   <Insets bottom="15.0" left="10.0" right="15.0" top="120.0" />
                </VBox.margin>
-            </Button>
-            <Button fx:id="favouritesButton" alignment="CENTER" mnemonicParsing="false" onAction="#handleFavourites" prefHeight="41.0" prefWidth="165.0" style="-fx-background-color: #f0ffff;" styleClass="btn-info" text="Favourites">
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <graphic>
-                  <ImageView fitHeight="31.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../following.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
             </Button>
          </children>
       </VBox>
