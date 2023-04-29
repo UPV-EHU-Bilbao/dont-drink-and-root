@@ -42,6 +42,7 @@ public enum Constants {
     ENDPOINT_MARK_TOOT_AS_FAV("/favourite"),
     ENDPOINT_MARK_TOOT_AS_NOT_FAV("/unfavourite"),
     ENDPOINT_VERIFY_CREDENTIALS("verify_credentials"),
+    ENDPOINT_HOME("/timelines/home"),
 
     /**
      * Views
@@ -51,6 +52,7 @@ public enum Constants {
     USER_FRAME_VIEW("user.frame.view"),
     USER_TOOTS_VIEW("user.toots.view"),
     USER_FAVOURITE_TOOTS_VIEW("user.favourite-toots.view"),
+    USER_HOME_VIEW("user.home.view"),
 
     APP_VIEW("app.view"),
 

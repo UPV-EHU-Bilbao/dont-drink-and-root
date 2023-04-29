@@ -53,7 +53,7 @@ public class App extends Application {
         loginController.setMain(this);
 
         FXMLLoader menuLoader = new FXMLLoader(App.class.getResource(PropertyManager.getProperty(Constants.APP_VIEW)));
-        Scene menuScene = new Scene(menuLoader.load(), 1200, 800);
+        Scene menuScene = new Scene(menuLoader.load());
         AppController appController = menuLoader.getController();
         this.appController = appController;
         appController.setMain(this);
@@ -71,12 +71,16 @@ public class App extends Application {
             case "Login":
                 appStage.setTitle("Login");
                 appStage.setScene(loginScene);
+                appStage.show();
+                appStage.centerOnScreen();
                 loginController.initialize();
                 break;
             case "Menu":
                 appController.onScene();
                 appStage.setTitle("Rest API Mastodon");
                 appStage.setScene(menuScene);
+                appStage.show();
+                appStage.centerOnScreen();
                 break;
         }
     }

@@ -90,7 +90,7 @@ public abstract class TootListTemplateController {
     private Label dateText;
 
     @FXML
-    private RadioButton favButton;
+    private Button favButton;
 
     /**
      * Specific MainController class members.
@@ -192,8 +192,11 @@ public abstract class TootListTemplateController {
 
         author.setText(toot.getUsername());
         date.setText(toot.getCreatedAt());
-        favButton.setSelected(toot.isFavourited());
-
+        if(toot.isFavourited()){
+            favButton.setStyle("-fx-background-color: #9ce9ff;");
+        } else {
+            favButton.setStyle("-fx-background-color: #ffffff;");
+        }
         /*
         TODO: Change all this kind of thread use for CompletableFuture
          */
@@ -229,20 +232,20 @@ public abstract class TootListTemplateController {
     }
 
     @FXML
-    void favClicked(MouseEvent event){
+    void favClicked(ActionEvent event){
         if (finalToot.isFavourited()){
             new Thread(() -> {
                 restAPI.postRequest(Constants.ENDPOINT_STATUSES + "/" + finalToot.getId() + Constants.ENDPOINT_MARK_TOOT_AS_NOT_FAV, new HashMap<String, String>());
             }).start();
             finalToot.setFavourited(false);
-            favButton.setSelected(false);
+            favButton.setStyle("-fx-background-color: #ffffff;");
         }
         else {
             new Thread(() -> {
                 restAPI.postRequest(Constants.ENDPOINT_STATUSES + "/" + finalToot.getId() + Constants.ENDPOINT_MARK_TOOT_AS_FAV, new HashMap<String, String>());
             }).start();
             finalToot.setFavourited(true);
-            favButton.setSelected(true);
+            favButton.setStyle("-fx-background-color: #9ce9ff;");
         }
     }
 
