@@ -64,6 +64,7 @@ public class App extends Application {
         stage.setTitle("Login");
         stage.setScene(loginScene);
         stage.show();
+        stage.centerOnScreen();
     }
 
     public void show(String title) throws IOException{
