@@ -43,7 +43,7 @@ import java.util.List;
 public class FollowingController extends FollowController {
 
     @FXML
-    private VBox followingView;
+    private VBox accountsListView;
 
     @FXML
     private ImageView loadingImage;
@@ -70,7 +70,7 @@ public class FollowingController extends FollowController {
         new Thread(() -> {
             List<Account> list = (List<Account>)restAPI.getObjectList(Constants.ENDPOINT_FOLLOWING.getKey());
             Platform.runLater(() -> {
-                super.initialize(list, followingView);
+                super.initialize(list, accountsListView);
                 scrollPane.setVisible(true);
                 loadingImage.setVisible(false);
             });

@@ -43,7 +43,7 @@ import javafx.scene.image.ImageView;
 public class FollowersController extends FollowController {
 
     @FXML
-    private VBox followersView;
+    private VBox accountsListView;
 
     @FXML
     private ImageView loadingImage;
@@ -66,7 +66,7 @@ public class FollowersController extends FollowController {
         new Thread(() -> {
             List<Account> list = (List<Account>) restAPI.getObjectList(Constants.ENDPOINT_FOLLOWERS.getKey());
             Platform.runLater(() -> {
-                super.initialize(list, followersView);
+                super.initialize(list, accountsListView);
                 scrollPane.setVisible(true);
                 loadingImage.setVisible(false);
             });
