@@ -41,43 +41,8 @@ import java.time.Instant;
 import java.util.List;
 
 public class FollowingController extends FollowController {
-
-    @FXML
-    private VBox accountsListView;
-
-    @FXML
-    private ImageView loadingImage;
-
-    @FXML
-    private ScrollPane scrollPane;
-
-
-    @FXML
-    public void initialize() throws IOException {
-
-        //  Start timer
-        Instant start = Instant.now();
-
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setVisible(false);
-        loadingImage.setVisible(true);
-
-        restAPI = new MastodonAPI();
-
-        /*
-        TODO: Change all this kind of thread use for CompletableFuture
-         */
-        new Thread(() -> {
-            List<Account> list = (List<Account>)restAPI.getObjectList(Constants.ENDPOINT_FOLLOWING.getKey());
-            Platform.runLater(() -> {
-                super.initialize(list, accountsListView);
-                scrollPane.setVisible(true);
-                loadingImage.setVisible(false);
-            });
-        }).start();
-
-        //  Stop timer and print taken time
-        Instant end = Instant.now();
-        System.out.println("Time taken to load following: " + java.time.Duration.between(start, end).toMillis() + "ms");
+    @Override
+    void setAPI_endpoint() {
+        API_endpoint = Constants.ENDPOINT_FOLLOWING.getKey();
     }
 }
