@@ -35,6 +35,7 @@ import eus.ehu.bum4_restapi.utils.Shared;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 
@@ -63,6 +64,9 @@ public class LoginController {
     @FXML
     public Label apiLabel;
 
+    @FXML
+    private ImageView KeyImg;
+
     private static DbAccessManager db;
     private RestAPI<?, ?> restAPI;
 
@@ -72,6 +76,7 @@ public class LoginController {
         restAPI = new MastodonAPI();
         apiKeyField.setVisible(false);
         apiLabel.setVisible(false);
+        KeyImg.setVisible(false);
         apiKeyField.setText("");
         usernameField.setText(PropertyManager.getProperty(Constants.CURRENT_USERNAME));
         infoLabel.setText("");
@@ -91,6 +96,7 @@ public class LoginController {
             if(!validateInfo(username, apiKeyDB, db)){
                 apiKeyField.setVisible(true);
                 apiLabel.setVisible(true);
+                KeyImg.setVisible(true);
             }
         } else {
             if(apiKeyField.isVisible()){
@@ -99,6 +105,7 @@ public class LoginController {
                 infoLabel.setText("API Key not existant for that account, please introduce one.");
                 apiKeyField.setVisible(true);
                 apiLabel.setVisible(true);
+                KeyImg.setVisible(true);
             }
         }
     }
