@@ -123,7 +123,13 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
         return gson.fromJson(jsonArray.getAsJsonArray(), accountList);
     }
 
-    public void setTootList(List<Toot> list){
+    public void setTootList(List<Toot> list) throws NullPointerException{
+        if(list.isEmpty())
+            throw new NullPointerException("List is empty.");
+        for(Toot toot : list){
+            if(toot == null)
+                throw new NullPointerException("List contains null element.");
+        }
         tootList = list;
         tootListFilled = true;
     }
@@ -235,5 +241,4 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
         }
         return false;
     }
-
 }
