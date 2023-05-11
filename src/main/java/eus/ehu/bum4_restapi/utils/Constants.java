@@ -55,6 +55,7 @@ public enum Constants {
     USER_HOME_VIEW("user.home.view"),
 
     USER_ACCOUNTS_LIST_VIEW("user.accounts.list.view"),
+    ACCOUNT_LOGIN_FRAME_VIEW("account.login.frame.view"),
 
     APP_VIEW("app.view"),
 
