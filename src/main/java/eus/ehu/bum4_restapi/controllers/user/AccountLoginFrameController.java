@@ -12,15 +12,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.scene.layout.AnchorPane;
 
-import java.awt.font.ShapeGraphicAttribute;
 import java.io.IOException;
 import java.util.Objects;
+import java.io.File;
 
-public class AccountForLoginController {
+public class AccountLoginFrameController {
 
     @FXML
     private ImageView accountImage;
@@ -46,7 +47,7 @@ public class AccountForLoginController {
 
     public void initialize(){};
 
-    public AccountForLoginController(SimpleAccount account, App app){
+    public AccountLoginFrameController(SimpleAccount account, App app){
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(PropertyManager.getProperty(Constants.ACCOUNT_LOGIN_FRAME_VIEW)));
             fxmlLoader.setController(this);
@@ -82,6 +83,15 @@ public class AccountForLoginController {
                     throw new RuntimeException(e);
                 }
             });
+            Image image;
+
+            File file = new File("src/main/resources/profile_pictures/" + account.getId() + ".jpeg");
+            if (!file.exists()){
+                file = new File("src/main/resources/profile_pictures/default-profile.jpeg");
+            }
+            image = new Image(file.toURI().toString());
+            accountImage.setImage(image);
+
         }
         else {
             username_text.setText("Add new account: ");

@@ -1,7 +1,7 @@
 package eus.ehu.bum4_restapi.controllers;
 
 import eus.ehu.bum4_restapi.App;
-import eus.ehu.bum4_restapi.controllers.user.AccountForLoginController;
+import eus.ehu.bum4_restapi.controllers.user.AccountLoginFrameController;
 import eus.ehu.bum4_restapi.database.DbAccessManager;
 import eus.ehu.bum4_restapi.model.SimpleAccount;
 import eus.ehu.bum4_restapi.utils.VboxUtils;
@@ -22,7 +22,7 @@ public class LoginController {
         db = DbAccessManager.getInstance();
         ObservableList<SimpleAccount> storedAccounts = FXCollections.observableList(db.getAccounts());
         storedAccounts.add(new SimpleAccount());
-        VboxUtils.mapByValue(storedAccounts, accounts_vbox.getChildren(), account -> new AccountForLoginController(account, main).getAnchorPane());
+        VboxUtils.mapByValue(storedAccounts, accounts_vbox.getChildren(), account -> new AccountLoginFrameController(account, main).getAnchorPane());
     }
 
     public void setMain(App app) {

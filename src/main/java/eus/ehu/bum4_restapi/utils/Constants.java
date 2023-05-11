@@ -41,6 +41,7 @@ public enum Constants {
     ENDPOINT_FAVOURITES("/favourites"),
     ENDPOINT_MARK_TOOT_AS_FAV("/favourite"),
     ENDPOINT_MARK_TOOT_AS_NOT_FAV("/unfavourite"),
+    ENDPOINT_GET_AVATAR("/avatar"),
     ENDPOINT_VERIFY_CREDENTIALS("verify_credentials"),
     ENDPOINT_HOME("/timelines/home"),
 
