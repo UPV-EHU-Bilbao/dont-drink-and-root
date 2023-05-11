@@ -73,7 +73,9 @@ public class UserFrameController {
         username.setText(item.getUsername());
         followers.setText("" + item.getFollowersCount());
         following.setText("" + item.getFollowingCount());
-        avatar.setImage(new Image(item.getAvatar()));
+        new Thread(() -> {
+            avatar.setImage(new Image(item.getAvatar()));
+        }).start();
     }
 
     public AnchorPane getAnchorPane(){

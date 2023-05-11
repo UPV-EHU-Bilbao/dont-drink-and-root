@@ -54,6 +54,8 @@ public enum Constants {
     USER_FAVOURITE_TOOTS_VIEW("user.favourite-toots.view"),
     USER_HOME_VIEW("user.home.view"),
 
+    USER_ACCOUNTS_LIST_VIEW("user.accounts.list.view"),
+
     APP_VIEW("app.view"),
 
     /**
