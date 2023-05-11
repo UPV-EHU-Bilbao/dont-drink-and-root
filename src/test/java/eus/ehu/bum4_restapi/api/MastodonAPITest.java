@@ -51,66 +51,23 @@ class MastodonAPITest {
     }
 
     @Test
-    void getRequest() {
+    public void testResetTootList() {
+        List<Toot> toots = Arrays.asList(toot1, toot2);
+        mastodonAPI.setTootList(toots);
+        mastodonAPI.resetTootList();
+        assertEquals(0, mastodonAPI.getTootListSize());
     }
 
     @Test
-    void postRequest() {
+    public void testGetObjectFromList() {
+        List<Toot> toots = Arrays.asList(toot1, toot2);
+        mastodonAPI.setTootList(toots);
+        assertEquals(toot1, mastodonAPI.getObjectFromList(0));
+        assertEquals(toot2, mastodonAPI.getObjectFromList(1));
     }
 
     @Test
-    void getFollowers() {
-    }
-
-    @Test
-    void setTootList() {
-    }
-
-    @Test
-    void resetTootList() {
-    }
-
-    @Test
-    void getTootListSize() {
-    }
-
-    @Test
-    void setFollowersList() {
-    }
-
-    @Test
-    void setFollowingList() {
-    }
-
-    @Test
-    void setJSONtoList() {
-    }
-
-    @Test
-    void getPreviousJSONObject() {
-    }
-
-    @Test
-    void getNextJSONObject() {
-    }
-
-    @Test
-    void getObjectFromList() {
-    }
-
-    @Test
-    void getObjectFromListAsync() {
-    }
-
-    @Test
-    void getObjectList() {
-    }
-
-    @Test
-    void getObjectListSize() {
-    }
-
-    @Test
-    void validateCredentials() {
+    public void testGetObjectFromListThrowsException() {
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> mastodonAPI.getObjectFromList(0));
     }
 }
