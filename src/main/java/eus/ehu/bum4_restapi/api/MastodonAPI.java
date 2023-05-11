@@ -93,6 +93,7 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
                 .build();
         try {
             Response response = client.newCall(request).execute();
+            System.out.println(response.body().string());
             result = String.valueOf(response.code());
         } catch (IOException e) {
             e.printStackTrace();

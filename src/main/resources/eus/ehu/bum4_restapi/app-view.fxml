@@ -180,9 +180,9 @@
                   <Insets left="40.0" top="-25.0" />
                </VBox.margin>
             </Button>
-            <Label fx:id="PostedTootLabel" contentDisplay="CENTER" prefHeight="39.0" prefWidth="222.0" text="Label" textAlignment="CENTER" visible="false">
+            <Label fx:id="PostedTootLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="39.0" prefWidth="244.0" text="Label" textAlignment="CENTER" visible="false">
                <VBox.margin>
-                  <Insets left="50.0" top="30.0" />
+                  <Insets left="20.0" top="30.0" />
                </VBox.margin>
             </Label>
          </children>

@@ -24,7 +24,6 @@ public class ScheduleController {
 
     @FXML
     public void initialize() {
-        appController = new AppController();
 
         datePicker.setValue(java.time.LocalDate.now());
 
@@ -33,6 +32,10 @@ public class ScheduleController {
 
         SpinnerValueFactory valueFactory2 = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59);
         changeFormat(valueFactory2, minute);
+    }
+
+    public void setAppController(AppController appController) {
+        this.appController = appController;
     }
 
     private void changeFormat(SpinnerValueFactory<Integer> valueFactory1, Spinner<Integer> hour) {

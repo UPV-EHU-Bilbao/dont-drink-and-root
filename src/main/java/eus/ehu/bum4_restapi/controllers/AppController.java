@@ -39,6 +39,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -103,11 +104,12 @@ public class AppController {
     private Button schedule;
 
     private RestAPI<?, ?> restAPI;
-    private ScheduleController scheduleController;
+    public ScheduleController scheduleController;
     private String datetime = "";
 
     @FXML
     public void initialize(){
+        System.out.println("AppController initialize");
     }
 
     public void onScene() throws IOException{
@@ -290,6 +292,7 @@ public class AppController {
                     params.put("status", text);
                     params.put("scheduled_at", datetime);
                     String result = restAPI.postRequest(String.valueOf(Constants.ENDPOINT_STATUSES), params);
+
                     if (result.equals("200")) {
                         Platform.runLater(() -> {
                             PostedTootLabel.setVisible(true);
@@ -319,8 +322,10 @@ public class AppController {
     @FXML
     void openSchedule(ActionEvent event) throws IOException {
         FXMLLoader scheduleLoader = new FXMLLoader(App.class.getResource("schedule-view.fxml"));
-        scheduleController = new ScheduleController();
-        Scene loginScene = new Scene(scheduleLoader.load());
+        Parent scheduleView = scheduleLoader.load();
+        scheduleController = scheduleLoader.getController();
+        scheduleController.setAppController(this);
+        Scene loginScene = new Scene(scheduleView);
         Stage stage = new Stage();
         stage.setScene(loginScene);
         stage.show();
