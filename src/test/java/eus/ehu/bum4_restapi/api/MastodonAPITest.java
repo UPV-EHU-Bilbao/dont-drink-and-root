@@ -26,6 +26,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -70,4 +71,57 @@ class MastodonAPITest {
     public void testGetObjectFromListThrowsException() {
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> mastodonAPI.getObjectFromList(0));
     }
+
+    @Test
+    public void testSetTootListReplacesExistingList() {
+        List<Toot> toots1 = Arrays.asList(new Toot(), new Toot());
+        mastodonAPI.setTootList(toots1);
+        List<Toot> toots2 = List.of(new Toot());
+        mastodonAPI.setTootList(toots2);
+        assertEquals(1, mastodonAPI.getTootListSize());
+    }
+
+    @Test
+    public void testGetObjectFromListThrowsExceptionForNegativeIndex() {
+        List<Toot> toots = Arrays.asList(new Toot(), new Toot());
+        mastodonAPI.setTootList(toots);
+        assertThrows(IndexOutOfBoundsException.class, () -> mastodonAPI.getObjectFromList(-1));
+    }
+
+    @Test
+    public void testGetObjectFromListThrowsExceptionForOutOfRangeIndex() {
+        List<Toot> toots = Arrays.asList(new Toot(), new Toot());
+        mastodonAPI.setTootList(toots);
+        assertThrows(IndexOutOfBoundsException.class, () -> mastodonAPI.getObjectFromList(2));
+    }
+
+    @Test
+    public void testGetFromEmptyList() {
+        assertThrows(IndexOutOfBoundsException.class, () -> mastodonAPI.getObjectFromList(0));
+    }
+
+    @Test
+    public void testGetFromNonEmptyList() {
+        mastodonAPI.setTootList(Collections.singletonList(toot1));
+        assertEquals(toot1, mastodonAPI.getObjectFromList(0));
+    }
+
+    @Test
+    public void testListSizeChangesWithSet() {
+        mastodonAPI.setTootList(Arrays.asList(toot1, toot2));
+        assertEquals(2, mastodonAPI.getTootListSize());
+        mastodonAPI.setTootList(Collections.singletonList(toot1));
+        assertEquals(1, mastodonAPI.getTootListSize());
+    }
+
+    @Test
+    public void testSetTootListWithNull() {
+        assertThrows(NullPointerException.class, () -> mastodonAPI.setTootList(null));
+    }
+
+    @Test
+    public void testSetTootListWithContainsNull() {
+        assertThrows(NullPointerException.class, () -> mastodonAPI.setTootList(Arrays.asList(toot1, null, toot2)));
+    }
+
 }
