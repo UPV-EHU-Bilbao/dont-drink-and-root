@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
@@ -30,7 +31,7 @@ public class AccountLoginFrameController {
     private Button loginButton;
 
     @FXML
-    private Text username_text;
+    private Label username_label;
     private App main;
 
     @FXML
@@ -60,7 +61,7 @@ public class AccountLoginFrameController {
         main = app;
 
         if (!Objects.equals(account.getId(), "login")) {
-            username_text.setText(account.getUsername());
+            username_label.setText(account.getUsername());
             loginButton.setOnAction(actionEvent -> {
                 if (restAPI.validateCredentials(account.getUsername(), account.getApikey())){
                     Shared.username = account.getUsername();
@@ -94,7 +95,7 @@ public class AccountLoginFrameController {
 
         }
         else {
-            username_text.setText("Add new account: ");
+            username_label.setText("Add new account: ");
             loginButton.setText("Add!");
             loginButton.setOnAction(actionEvent -> {
                 try {
