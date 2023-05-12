@@ -22,6 +22,21 @@ First of all, we have corrected some of the issues from the previous sprint:
     1) When loading the app, it is necessary either to login or to select a logged account to enter with.
     2) It is now possible to post a toot.
     3) Manage favourites.
+    
+ Third sprint:
+ 
+ As in the previous sprint, we have corrected the founded issues:
+ 
+    - The app freezed in several cases. Not a problem anymore.
+    - The login view wasn't intuitive. We have improved the scene looking and added the possibility to manage several accounts from that window.
+    - The like button has been improved.
+    
+ These are the new features that we have added:
+ 
+    1) The homepage is now available, so you can now see the toots published by the accounts that you follow.
+    2) You can now schedule a toot, instead of posting it inmediately.
+    
+ Some other tasks like creating several branches and testing with JUnit have been done.
 
 ## Authors
             Aingeru Garcia           | Github: https://github.com/geru-scotland

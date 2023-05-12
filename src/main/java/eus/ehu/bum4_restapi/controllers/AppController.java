@@ -193,7 +193,7 @@ public class AppController {
                 userFollowing.setStyle(not_selected);
                 favouritesButton.setStyle(selected);
                 homeButton.setStyle(not_selected);
-                titleLabel.setText("Favourite Toots");
+                titleLabel.setText("Favourites");
                 Image image = new Image(getClass().getResourceAsStream("/following.png"));  //  Change picture
                 titleImg.setImage(image);
             }

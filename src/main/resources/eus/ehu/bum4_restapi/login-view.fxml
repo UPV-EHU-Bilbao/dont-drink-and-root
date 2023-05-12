@@ -1,14 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eus.ehu.bum4_restapi.controllers.LoginController">
    <children>
-      <VBox fx:id="accounts_vbox" alignment="CENTER" layoutX="24.0" layoutY="77.0" prefHeight="305.0" prefWidth="553.0" />
+      <VBox fx:id="accounts_vbox" alignment="CENTER" layoutX="21.0" layoutY="99.0" prefHeight="292.0" prefWidth="552.0" />
       <Text layoutX="24.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Don't Drink And Root" />
       <Text layoutX="282.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="AZURE" height="91.0" stroke="LIGHTSKYBLUE" strokeType="INSIDE" width="600.0" />
+      <ImageView fitHeight="83.0" fitWidth="139.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../Dont-Drink-And-Root-Sticker-scaled.jpg" />
+         </image>
+      </ImageView>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="326.0" layoutY="13.0" prefHeight="61.0" prefWidth="151.0" style="-fx-background-color: #87ceeb;" text="Login">
+         <font>
+            <Font name="Gadugi" size="45.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="52.0" fitWidth="55.0" layoutX="256.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../usernameIcon.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
