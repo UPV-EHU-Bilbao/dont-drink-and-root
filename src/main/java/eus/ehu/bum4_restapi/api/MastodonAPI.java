@@ -36,8 +36,11 @@ import eus.ehu.bum4_restapi.utils.Constants;
 import eus.ehu.bum4_restapi.utils.Shared;
 import okhttp3.*;
 
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Type;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -121,7 +124,13 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
         return gson.fromJson(jsonArray.getAsJsonArray(), accountList);
     }
 
-    public void setTootList(List<Toot> list){
+    public void setTootList(List<Toot> list) throws NullPointerException{
+        if(list.isEmpty())
+            throw new NullPointerException("List is empty.");
+        for(Toot toot : list){
+            if(toot == null)
+                throw new NullPointerException("List contains null element.");
+        }
         tootList = list;
         tootListFilled = true;
     }
@@ -199,11 +208,38 @@ public class MastodonAPI implements RestAPI<Toot, Account> {
             JsonObject jsonData = gson.fromJson(rq, JsonObject.class);
             String user = jsonData.get("username").getAsString();
             Shared.accID = jsonData.get("id").getAsString();
+
+            new Thread(() -> {
+                String destinationFile = "src/main/resources/profile_pictures/" + Shared.accID + ".jpeg";
+
+                try {
+                    URL url = new URL(jsonData.get("avatar").getAsString());
+                    URLConnection connection = url.openConnection();
+                    BufferedInputStream inputStream = new BufferedInputStream(connection.getInputStream());
+
+                    File file = new File(destinationFile);
+                    if (!file.exists()) {
+                        file.createNewFile();
+                    }
+
+                    FileOutputStream outputStream = new FileOutputStream(file);
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = inputStream.read(buffer, 0, 1024)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                    outputStream.close();
+                    inputStream.close();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+
             return username.equals(user);
         } catch(Exception e){
             System.out.println("[EXCEPTION][API-CREDENTIALS] Something went wrong with the validation.");
         }
         return false;
     }
-
 }

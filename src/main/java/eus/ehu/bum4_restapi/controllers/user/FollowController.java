@@ -25,22 +25,66 @@
 
 package eus.ehu.bum4_restapi.controllers.user;
 
+import eus.ehu.bum4_restapi.api.MastodonAPI;
 import eus.ehu.bum4_restapi.api.RestAPI;
 import eus.ehu.bum4_restapi.model.Account;
+import eus.ehu.bum4_restapi.utils.Constants;
 import eus.ehu.bum4_restapi.utils.VboxUtils;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
+import java.time.Instant;
 import java.util.List;
 
 
-public class FollowController {
+public abstract class FollowController {
 
-    protected RestAPI<?, ?> restAPI;
     @FXML
-    public void initialize(List<Account> list, VBox view)  {
+    protected VBox accountsListView;
+
+    @FXML
+    protected ImageView loadingImage;
+
+    @FXML
+    protected ScrollPane scrollPane;
+    protected RestAPI<?, ?> restAPI;
+
+    protected String API_endpoint;
+
+    @FXML
+    public void initialize(){
+
+        //  Start timer
+        Instant start = Instant.now();
+
+        scrollPane.setVisible(false);
+        loadingImage.setVisible(true);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        restAPI = new MastodonAPI();
+
+        setAPI_endpoint();
+
+        new Thread(() -> {
+            List<Account> list = (List<Account>) restAPI.getObjectList(API_endpoint);
+            Platform.runLater(() -> {
+                initialize(list, accountsListView);
+                scrollPane.setVisible(true);
+                loadingImage.setVisible(false);
+            });
+        }).start();
+
+        Instant end = Instant.now();
+        System.out.println("Time taken to load followers: " + java.time.Duration.between(start, end).toMillis() + "ms");
+    }
+
+    @FXML
+    public void initialize(List<Account> list, VBox view) {
 
         ObservableList<Account> items = FXCollections.observableList(list);
 
@@ -48,4 +92,6 @@ public class FollowController {
             VboxUtils.mapByValue(items, view.getChildren(), account -> new UserFrameController(account).getAnchorPane());
         }
     }
+
+    abstract void setAPI_endpoint();
 }

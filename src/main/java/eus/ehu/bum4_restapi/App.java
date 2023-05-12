@@ -25,6 +25,7 @@
 
 package eus.ehu.bum4_restapi;
 
+import eus.ehu.bum4_restapi.controllers.AddAccountController;
 import eus.ehu.bum4_restapi.controllers.AppController;
 import eus.ehu.bum4_restapi.controllers.LoginController;
 import eus.ehu.bum4_restapi.utils.Constants;
@@ -40,18 +41,19 @@ import java.io.IOException;
 public class App extends Application {
     Scene loginScene;
     LoginController loginController;
+    AddAccountController addAccountController;
     Scene menuScene;
     AppController appController;
     Stage appStage;
     @Override
     public void start(Stage stage) throws IOException {
         appStage = stage;
-
         FXMLLoader loginLoader = new FXMLLoader(App.class.getResource("login-view.fxml"));
-        Scene loginScene = new Scene(loginLoader.load(), 600, 400);
+        Scene loginScene = new Scene(loginLoader.load());
         LoginController loginController = loginLoader.getController();
         this.loginController = loginController;
         loginController.setMain(this);
+        loginController.init();
 
 
         FXMLLoader menuLoader = new FXMLLoader(App.class.getResource("app-view.fxml"));
@@ -78,10 +80,10 @@ public class App extends Application {
         switch (title){
             case "Login":
                 appStage.setTitle("Login");
+                loginController.init();
                 appStage.setScene(loginScene);
                 appStage.show();
                 appStage.centerOnScreen();
-                loginController.initialize();
                 break;
             case "Menu":
                 appController.onScene();
@@ -90,6 +92,15 @@ public class App extends Application {
                 appStage.show();
                 appStage.centerOnScreen();
                 break;
+            case "AddAccount":
+                FXMLLoader addLoader = new FXMLLoader(App.class.getResource("add-account-view.fxml"));
+                Scene addScene = new Scene(addLoader.load());
+                this.addAccountController = addLoader.getController();
+                addAccountController.setMain(this);
+                appStage.setTitle("Add account!");
+                appStage.setScene(addScene);
+                appStage.centerOnScreen();
+
         }
     }
 

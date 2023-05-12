@@ -41,38 +41,8 @@ import java.util.List;
 import javafx.scene.image.ImageView;
 
 public class FollowersController extends FollowController {
-
-    @FXML
-    private VBox followersView;
-
-    @FXML
-    private ImageView loadingImage;
-
-    @FXML
-    private ScrollPane scrollPane;
-
-    @FXML
-    public void initialize() throws IOException {
-
-        //  Start timer
-        Instant start = Instant.now();
-
-        scrollPane.setVisible(false);
-        loadingImage.setVisible(true);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-
-        restAPI = new MastodonAPI();
-
-        new Thread(() -> {
-            List<Account> list = (List<Account>) restAPI.getObjectList(Constants.ENDPOINT_FOLLOWERS.getKey());
-            Platform.runLater(() -> {
-                super.initialize(list, followersView);
-                scrollPane.setVisible(true);
-                loadingImage.setVisible(false);
-            });
-        }).start();
-
-        Instant end = Instant.now();
-        System.out.println("Time taken to load followers: " + java.time.Duration.between(start, end).toMillis() + "ms");
+    @Override
+    void setAPI_endpoint() {
+        API_endpoint = Constants.ENDPOINT_FOLLOWERS.getKey();
     }
 }

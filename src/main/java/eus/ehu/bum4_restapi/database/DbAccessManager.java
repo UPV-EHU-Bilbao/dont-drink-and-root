@@ -95,6 +95,19 @@ public class DbAccessManager {
         this.close();
     }
 
+    public void deleteAccount(String id){
+        this.open();
+        String sql = "DELETE FROM accounts WHERE id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)){
+            pstmt.setString(1, id);
+            pstmt.execute();
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        this.close();
+    }
+
     public ArrayList<SimpleAccount> getAccounts (){
         var accounts  = new ArrayList<SimpleAccount>();
         this.open();

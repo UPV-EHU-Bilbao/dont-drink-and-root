@@ -36,6 +36,11 @@ public class SimpleAccount {
         this.id = id;
     }
 
+    //  This constructor should be used to create login instances
+    public SimpleAccount(){
+        id = "login";
+    };
+
     public String getUsername() {
         return username;
     }

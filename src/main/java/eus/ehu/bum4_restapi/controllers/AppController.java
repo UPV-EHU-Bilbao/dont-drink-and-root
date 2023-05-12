@@ -28,9 +28,7 @@ package eus.ehu.bum4_restapi.controllers;
 import eus.ehu.bum4_restapi.App;
 import eus.ehu.bum4_restapi.api.MastodonAPI;
 import eus.ehu.bum4_restapi.api.RestAPI;
-import eus.ehu.bum4_restapi.controllers.user.FavTootsController;
-import eus.ehu.bum4_restapi.controllers.user.HomeController;
-import eus.ehu.bum4_restapi.controllers.user.TootsController;
+import eus.ehu.bum4_restapi.controllers.user.*;
 import eus.ehu.bum4_restapi.utils.Constants;
 import eus.ehu.bum4_restapi.utils.PropertyManager;
 import eus.ehu.bum4_restapi.utils.Shared;
@@ -106,6 +104,9 @@ public class AppController {
     private RestAPI<?, ?> restAPI;
     public ScheduleController scheduleController;
     private String datetime = "";
+
+
+    private String currentViewOnCenter = "";
 
     @FXML
     public void initialize(){
@@ -211,37 +212,51 @@ public class AppController {
 
     @FXML
     void handleHome() throws IOException {
-        System.out.println("Loading Home view...");
-        loadViewOnCenter(PropertyManager.getProperty(Constants.USER_TOOTS_VIEW), HomeController.class);
-        selectButton("home");
+        if (!currentViewOnCenter.equals("home")) {
+            System.out.println("Loading Home view...");
+            loadViewOnCenter(PropertyManager.getProperty(Constants.USER_TOOTS_VIEW), HomeController.class);
+            selectButton("home");
+            currentViewOnCenter = "home";
+        }
     }
     @FXML
     void handleLoadUserToots() throws IOException {
-        System.out.println("Loading User Toot view...");
-        loadViewOnCenter(PropertyManager.getProperty(Constants.USER_TOOTS_VIEW), TootsController.class);
-        selectButton("toots");
-
+        if (!currentViewOnCenter.equals("userToots")) {
+            System.out.println("Loading User Toot view...");
+            loadViewOnCenter(PropertyManager.getProperty(Constants.USER_TOOTS_VIEW), TootsController.class);
+            selectButton("toots");
+            currentViewOnCenter = "userToots";
+        }
     }
 
     @FXML
     void handleLoadUserFollowers() throws IOException {
-        System.out.println("Loading User Followers...");
-        loadViewOnCenter(PropertyManager.getProperty(Constants.USER_FOLLOWERS_VIEW));
-        selectButton("followers");
+        if (!currentViewOnCenter.equals("followers")) {
+            System.out.println("Loading User Followers...");
+            loadViewOnCenter(PropertyManager.getProperty(Constants.USER_ACCOUNTS_LIST_VIEW), FollowersController.class);
+            selectButton("followers");
+            currentViewOnCenter = "followers";
+        }
     }
 
     @FXML
     void handleLoadUserFollowing() throws IOException {
-        System.out.println("Loading User Following...");
-        loadViewOnCenter(PropertyManager.getProperty(Constants.USER_FOLLOWING_VIEW));
-        selectButton("following");
+        if (!currentViewOnCenter.equals("following")) {
+            System.out.println("Loading User Following...");
+            loadViewOnCenter(PropertyManager.getProperty(Constants.USER_ACCOUNTS_LIST_VIEW), FollowingController.class);
+            selectButton("following");
+            currentViewOnCenter = "following";
+        }
     }
 
     @FXML
     void handleFavourites() throws IOException {
-        System.out.println("Loading favourite toots...");
-        loadViewOnCenter(PropertyManager.getProperty(Constants.USER_TOOTS_VIEW), FavTootsController.class);
-        selectButton("favourite-toots");
+        if (!currentViewOnCenter.equals("favourites")) {
+            System.out.println("Loading favourite toots...");
+            loadViewOnCenter(PropertyManager.getProperty(Constants.USER_TOOTS_VIEW), FavTootsController.class);
+            selectButton("favourite-toots");
+            currentViewOnCenter = "favourites";
+        }
     }
 
     @FXML
