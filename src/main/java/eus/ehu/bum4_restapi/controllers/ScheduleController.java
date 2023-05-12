@@ -6,6 +6,11 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class ScheduleController {
     @FXML
     private DatePicker datePicker;
@@ -55,36 +60,38 @@ public class ScheduleController {
 
     @FXML
     void applyValues(ActionEvent event) {
-        if(datePicker.getValue().isBefore(java.time.LocalDate.now())){
+        if (datePicker.getValue().isBefore(java.time.LocalDate.now())) {
             incorrect.setText("Incorrect date");
             return;
-        } else if(datePicker.getValue().isEqual(java.time.LocalDate.now())){
-            if(hour.getValue() < java.time.LocalTime.now().getHour()){
+        } else if (datePicker.getValue().isEqual(java.time.LocalDate.now())) {
+            if (hour.getValue() < java.time.LocalTime.now().getHour()) {
                 incorrect.setText("Incorrect time");
                 return;
-            } else if(hour.getValue() == java.time.LocalTime.now().getHour()){
-                if(minute.getValue() < java.time.LocalTime.now().getMinute()){
+            } else if (hour.getValue() == java.time.LocalTime.now().getHour()) {
+                if (minute.getValue() < java.time.LocalTime.now().getMinute()) {
                     incorrect.setText("Incorrect time");
                     return;
                 }
             }
         }
 
-        int hour = this.hour.getValue();
-        int minute = this.minute.getValue();
-        String formattedHour = String.format("%02d", hour);
-        String formattedMinute = String.format("%02d", minute);
+        int selectedHour = hour.getValue();
+        int selectedMinute = minute.getValue();
+        String formattedHour = String.format("%02d", selectedHour);
+        String formattedMinute = String.format("%02d", selectedMinute);
 
-        datetime = datePicker.getValue().toString() + "T" + formattedHour + ":" + formattedMinute + ":00.000Z";
+        LocalDateTime localDateTime = LocalDateTime.of(datePicker.getValue(), java.time.LocalTime.of(selectedHour, selectedMinute));
+        ZoneId localZone = ZoneId.systemDefault();
+        ZonedDateTime localZonedDateTime = localDateTime.atZone(localZone);
+        ZonedDateTime utcZonedDateTime = localZonedDateTime.withZoneSameInstant(ZoneId.of("UTC"));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        String datetime = utcZonedDateTime.format(formatter);
         System.out.println(datetime);
+
         appController.setDatetime(datetime);
         Stage stage = (Stage) applyButton.getScene().getWindow();
         stage.close();
-
-    }
-
-    public String getDatetime(){
-        return datetime;
     }
 
 }
