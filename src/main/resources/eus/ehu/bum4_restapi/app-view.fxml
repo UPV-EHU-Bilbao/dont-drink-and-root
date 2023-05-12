@@ -165,12 +165,24 @@
             </TextArea>
             <Button fx:id="postButton" mnemonicParsing="false" onAction="#publishToot" style="-fx-background-color: white;" text="Publish">
                <VBox.margin>
-                  <Insets left="30.0" top="5.0" />
+                  <Insets left="170.0" top="5.0" />
                </VBox.margin>
             </Button>
-            <Label fx:id="PostedTootLabel" contentDisplay="CENTER" prefHeight="39.0" prefWidth="222.0" text="Label" textAlignment="CENTER" visible="false">
+            <Button fx:id="schedule" mnemonicParsing="false" onAction="#openSchedule" prefHeight="25.0" prefWidth="99.0" style="-fx-background-color: white;" text="  Schedule">
+               <graphic>
+                  <ImageView fitHeight="14.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../clock.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
                <VBox.margin>
-                  <Insets left="50.0" top="30.0" />
+                  <Insets left="40.0" top="-25.0" />
+               </VBox.margin>
+            </Button>
+            <Label fx:id="PostedTootLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="39.0" prefWidth="244.0" text="Label" textAlignment="CENTER" visible="false">
+               <VBox.margin>
+                  <Insets left="20.0" top="30.0" />
                </VBox.margin>
             </Label>
          </children>

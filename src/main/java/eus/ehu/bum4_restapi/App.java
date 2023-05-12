@@ -32,6 +32,7 @@ import eus.ehu.bum4_restapi.utils.Constants;
 import eus.ehu.bum4_restapi.utils.PropertyManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -54,11 +55,17 @@ public class App extends Application {
         loginController.setMain(this);
         loginController.init();
 
-        FXMLLoader menuLoader = new FXMLLoader(App.class.getResource(PropertyManager.getProperty(Constants.APP_VIEW)));
-        Scene menuScene = new Scene(menuLoader.load());
-        AppController appController = menuLoader.getController();
-        this.appController = appController;
+
+        FXMLLoader menuLoader = new FXMLLoader(App.class.getResource("app-view.fxml"));
+        Parent root = menuLoader.load();
+
+        this.appController = menuLoader.getController();
+       // menuLoader.setController(this.appController);
         appController.setMain(this);
+
+        Scene menuScene = new Scene(root);
+        stage.setScene(menuScene);
+        stage.show();
 
         this.loginScene = loginScene;
         this.menuScene = menuScene;
@@ -66,6 +73,7 @@ public class App extends Application {
         stage.setTitle("Login");
         stage.setScene(loginScene);
         stage.show();
+        stage.centerOnScreen();
     }
 
     public void show(String title) throws IOException{
@@ -99,5 +107,9 @@ public class App extends Application {
 
     public static void main(String[] args) {
         launch();
+    }
+
+    public void setDatetime(String datetime) {
+        appController.setDatetime(datetime);
     }
 }

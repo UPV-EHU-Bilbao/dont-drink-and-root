@@ -37,6 +37,8 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -44,6 +46,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -94,12 +98,20 @@ public class AppController {
     @FXML
     private Button homeButton;
 
+    @FXML
+    private Button schedule;
+
     private RestAPI<?, ?> restAPI;
+    public ScheduleController scheduleController;
+    private String datetime = "";
+
 
     private String currentViewOnCenter = "";
-    
+
     @FXML
-    public void initialize(){}
+    public void initialize(){
+        System.out.println("AppController initialize");
+    }
 
     public void onScene() throws IOException{
         handleHome();
@@ -265,32 +277,75 @@ public class AppController {
             PostedTootLabel.setText("Uploading toot...");
             PostedTootLabel.setStyle("-fx-background-color: #ADD8E6");
             TootText.setText("");
-            new Thread(() -> {
-                Map<String, String> params = new HashMap<>();
-                params.put("status", text);
-                String result = restAPI.postRequest(String.valueOf(Constants.ENDPOINT_STATUSES), params);
-                if (result.equals("200")) {
-                    Platform.runLater(() -> {
-                        PostedTootLabel.setVisible(true);
-                        PostedTootLabel.setStyle("-fx-background-color:  #7fff00;");
-                        PostedTootLabel.setText("The toot has been successfully posted! :)");
-                        ShowFeedback();
-                    });
-                } else {
-                    Platform.runLater(() -> {
-                        PostedTootLabel.setVisible(true);
-                        PostedTootLabel.setStyle("-fx-background-color: #FFFFE0");
-                        PostedTootLabel.setText("Something went wrong :(");
-                        ShowFeedback();
-                    });
-                }
-            }).start();
+            String datetimeNew = getDatetime();
+            System.out.println("Datetime" + datetimeNew);
+            if(datetimeNew.isEmpty()){
+                System.out.println("No datetime");
+                new Thread(() -> {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("status", text);
+                    String result = restAPI.postRequest(String.valueOf(Constants.ENDPOINT_STATUSES), params);
+                    if (result.equals("200")) {
+                        Platform.runLater(() -> {
+                            PostedTootLabel.setVisible(true);
+                            PostedTootLabel.setStyle("-fx-background-color:  #7fff00;");
+                            PostedTootLabel.setText("The toot has been successfully posted! :)");
+                            ShowFeedback();
+                        });
+                    } else {
+                        Platform.runLater(() -> {
+                            PostedTootLabel.setVisible(true);
+                            PostedTootLabel.setStyle("-fx-background-color: #FFFFE0");
+                            PostedTootLabel.setText("Something went wrong :(");
+                            ShowFeedback();
+                        });
+                    }
+                }).start();
+            } else{
+                new Thread(() -> {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("status", text);
+                    params.put("scheduled_at", datetime);
+                    String result = restAPI.postRequest(String.valueOf(Constants.ENDPOINT_STATUSES), params);
+
+                    if (result.equals("200")) {
+                        Platform.runLater(() -> {
+                            PostedTootLabel.setVisible(true);
+                            PostedTootLabel.setStyle("-fx-background-color:  #7fff00;");
+                            PostedTootLabel.setText("The toot has been successfully scheduled! :)");
+                            ShowFeedback();
+                        });
+                    } else {
+                        Platform.runLater(() -> {
+                            PostedTootLabel.setVisible(true);
+                            PostedTootLabel.setStyle("-fx-background-color: #FFFFE0");
+                            PostedTootLabel.setText("Something went wrong :(");
+                            ShowFeedback();
+                        });
+                    }
+                }).start();
+            }
+
         } else {
             PostedTootLabel.setVisible(true);
             PostedTootLabel.setText("Type something to post a toot!");
             PostedTootLabel.setStyle("-fx-background-color:  #ff4500;");
             ShowFeedback();
         }
+    }
+
+    @FXML
+    void openSchedule(ActionEvent event) throws IOException {
+        FXMLLoader scheduleLoader = new FXMLLoader(App.class.getResource("schedule-view.fxml"));
+        Parent scheduleView = scheduleLoader.load();
+        scheduleController = scheduleLoader.getController();
+        scheduleController.setAppController(this);
+        Scene loginScene = new Scene(scheduleView);
+        Stage stage = new Stage();
+        stage.setScene(loginScene);
+        stage.show();
+        stage.setTitle("Schedule");
+
     }
 
     private void ShowFeedback() {
@@ -302,5 +357,15 @@ public class AppController {
                 throw new RuntimeException(e);
             }
         }).start();
+    }
+
+    public void setDatetime(String datetimeP) {
+        System.out.println("Datetime: " + datetime);
+        datetime = datetime + datetimeP;
+        System.out.println("Datetime: " + datetime);
+    }
+
+    public String getDatetime(){
+        return datetime;
     }
 }
