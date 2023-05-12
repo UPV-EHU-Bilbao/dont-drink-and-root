@@ -33,7 +33,7 @@
       <TextField fx:id="apiKeyTextField" layoutX="164.0" layoutY="226.0" prefHeight="24.0" prefWidth="293.0" />
       <TextField fx:id="usernameTextField" layoutX="164.0" layoutY="174.0" prefHeight="24.0" prefWidth="293.0" />
       <Text layoutX="94.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username:" />
-      <Text layoutX="101.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Api Key:" />
+      <Text layoutX="86.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Access token:" />
       <Button fx:id="addButton" layoutX="269.0" layoutY="270.0" mnemonicParsing="false" onAction="#addClicked" style="-fx-background-color: #87cefa;" text="Add!" />
       <Text fx:id="infoText" layoutX="102.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="369.6000061035156" />
       <ImageView fitHeight="26.0" fitWidth="31.0" layoutX="60.0" layoutY="174.0" pickOnBounds="true" preserveRatio="true">
@@ -41,7 +41,7 @@
             <Image url="@../../../usernameIcon.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="32.0" fitWidth="26.0" layoutX="60.0" layoutY="221.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="32.0" fitWidth="26.0" layoutX="56.0" layoutY="226.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../APIkeyIcon.png" />
          </image>
